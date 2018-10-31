@@ -33,36 +33,45 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar.Layout, Version=12.7.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <Private>False</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=12.7.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <Private>False</Private>
     </Reference>
-    <Reference Include="HHDev.Core.NETStandard">      
+    <Reference Include="HHDev.Core.NETStandard">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHDev.Core.NETStandard.dll</HintPath>
       <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHDev.Core.NETStandard.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HHDev.Core.WinForms">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHDev.Core.WinForms.dll</HintPath>
       <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHDev.Core.WinForms.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HHDev.ProjectFramework.Definitions">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHDev.ProjectFramework.Definitions.dll</HintPath>
       <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHDev.ProjectFramework.Definitions.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HHTiming.Core.Definitions">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.Core.Definitions.dll</HintPath>
       <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.Core.Definitions.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HHTiming.DAL">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.DAL.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.DAL.dll</HintPath>      
+      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.DAL.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="HHTiming.Desktop.Definitions">     
+    <Reference Include="HHTiming.Desktop.Definitions">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.Desktop.Definitions.dll</HintPath>
       <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.Desktop.Definitions.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HHTiming.WinFormsControls">
       <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.WinFormsControls.dll</HintPath>
       <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.WinFormsControls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
