@@ -33,9 +33,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar.Layout, Version=12.7.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\DevComponents.DotNetBar.Layout.dll</HintPath>
+      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\DevComponents.DotNetBar.Layout.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=12.7.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
+      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\DevComponents.DotNetBar2.dll</HintPath>
+      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\DevComponents.DotNetBar2.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HHDev.Core.NETStandard">
