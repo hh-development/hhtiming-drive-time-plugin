@@ -555,7 +555,12 @@ namespace HHTiming.Blancpain
                 double pitWindow = lastForwardStint.StartTime - forwardOffset - (lastReverseStint.StartTime - reverseOffset);
 
                 // Next pit window opens before the end of the current maximum stint
-                _pitWindowOpenTime = firstForwardStint.EndTime - pitWindow - forwardOffset;
+                _pitWindowOpenTime = firstForwardStint.EndTime - pitWindow - forwardOffset;                
+            }
+
+            if (aMessage.EstimatedRaceFixedStintLengths != null && aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime != double.MaxValue)
+            {
+                _averageLapTime = aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime;
             }
         }
 
@@ -615,14 +620,9 @@ namespace HHTiming.Blancpain
                     _previousStintTimes += aMessage.DrivingTime;
                     _stintNumber++;
                 }
-            }
-
-            if (aMessage.SanitizedAverageLaptime != double.MaxValue)
-                _averageLapTime = aMessage.SanitizedAverageLaptime;
-            else
-                _averageLapTime = 0;
+            }            
         }
-
+        
         public void SetBackgroundColor(Color carColor)
         {
             tableLayoutPanel1.BackColor = carColor;
