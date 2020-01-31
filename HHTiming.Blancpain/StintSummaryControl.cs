@@ -38,7 +38,6 @@ namespace HHTiming.Blancpain
         private double _sessionTime = 0;
         private double _sessionEndTime = double.MaxValue;
 
-        private double _previousStintTimes = 0;
         private double _stintStartTime = 0;
         private double _stintTime = 0;
         private double _stintTimeUpdated = 0;
@@ -52,6 +51,8 @@ namespace HHTiming.Blancpain
         private double _pitWindowOpenTime = double.MaxValue;
 
         private const string LongTimeFormat = @"h\:mm\:ss";
+
+        private List<StintRecord> _stints = new List<StintRecord>();
 
         public StintSummaryControl()
         {
@@ -88,7 +89,6 @@ namespace HHTiming.Blancpain
 
                 _driverTotalTime = 0;
 
-                _previousStintTimes = 0;
                 _stintStartTime = 0;
                 _stintTimeUpdated = 0;
 
@@ -120,8 +120,6 @@ namespace HHTiming.Blancpain
                 {
                     _driverName = value;
                     lbl_DriverName.Text = value;
-
-                    _previousStintTimes = 0;
                 }
             }
         }
@@ -342,8 +340,9 @@ namespace HHTiming.Blancpain
 
                     if (_stintTimeUpdated != double.MaxValue && _stintTime != double.MaxValue)
                     {
-                        double drivingTime = _previousStintTimes + stintTime;
-                        lbl_ContinuousTimeRemaining.Text = SecondsToTimeString(Math.Max(MaxContinuousDrivingTime * 60 - drivingTime, 0), LongTimeFormat);
+                        //double drivingTime = _previousStintTimes + stintTime;
+                        //lbl_ContinuousTimeRemaining.Text = SecondsToTimeString(Math.Max(MaxContinuousDrivingTime * 60 - drivingTime, 0), LongTimeFormat);
+                        lbl_ContinuousTimeRemaining.Text = SecondsToTimeString(Math.Max(MaxContinuousDrivingTime * 60 - (CalculateContinuousTimeInCarForCurrentDriver() + aSessionUIUpdateMessage.SessionTime - _stintTimeUpdated), 0), LongTimeFormat);
 
                         lbl_TotalTimeRemaining.Text = SecondsToTimeString(Math.Max(MaxTotalDrivingTime * 60 - (_driverTotalTime + aSessionUIUpdateMessage.SessionTime - _stintTimeUpdated), 0), LongTimeFormat);
 
@@ -447,6 +446,27 @@ namespace HHTiming.Blancpain
             }
         }
 
+        private double CalculateContinuousTimeInCarForCurrentDriver()
+        {
+            double endTimeOfDriverStint = 0;
+            double startTimeOfDriverStint = 0;
+            string lastDriver = "";
+
+            
+            foreach (var stint in _stints)
+            {
+                if (stint.DriverId != lastDriver)
+                {
+                    startTimeOfDriverStint = stint.StartTime;
+                }
+
+                lastDriver = stint.DriverId;
+                endTimeOfDriverStint = stint.StartTime + stint.DrivingTime;
+            }
+
+            return endTimeOfDriverStint - startTimeOfDriverStint;
+        }
+
         public void ReceiveUIUpdateMessage(IUIUpdateMessage anUpdateMessage)
         {
             if (anUpdateMessage is ResetUIUpdateMessage)
@@ -460,7 +480,6 @@ namespace HHTiming.Blancpain
                 _averageLapTime = 0;
                 _driverName = "";
                 _driverTotalTime = 0;
-                _previousStintTimes = 0;
                 _projectedLapTime = 0;
                 _sessionTime = 0;
                 _stintNumber = 0;
@@ -468,6 +487,7 @@ namespace HHTiming.Blancpain
                 _stintTime = 0;
                 _stintTimeUpdated = 0;
                 _pitWindowOpenTime = double.MaxValue;
+                _stints.Clear();
             }
             else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
             {
@@ -495,7 +515,6 @@ namespace HHTiming.Blancpain
             }
             else if (anUpdateMessage is DriverOverrideUIUpdateMessage)
             {
-                _previousStintTimes = 0;
                 _stintNumber = 0;
             }
             else if (anUpdateMessage is PitstopUIUpdateMessage)
@@ -608,7 +627,6 @@ namespace HHTiming.Blancpain
                 {
                     _stintStartTime = aMessage.StartTime;
                     _stintTime = aMessage.DrivingTime;
-                    _stintTimeUpdated = aMessage.StartTime + aMessage.DrivingTime;
                 }
             }
             else if (aMessage.StintMessageType == StintUIUpdateMessage.StintMessageTypeEnum.EndOfStint)
@@ -616,11 +634,30 @@ namespace HHTiming.Blancpain
                 if (aMessage.DrivingTime != double.MaxValue && _stintNumber == aMessage.StintNumber)
                 {
                     DriverName = aMessage.DriverID;
-
-                    _previousStintTimes += aMessage.DrivingTime;
                     _stintNumber++;
                 }
-            }            
+            }
+
+            var stintRecord = _stints.FirstOrDefault(x => x.StintId == aMessage.StintID);
+
+            if (stintRecord == null)
+            {
+                stintRecord = new StintRecord(aMessage.StintID, aMessage.StintNumber);
+                _stints.Add(stintRecord);
+                _stints.Sort((x, y) => x.Index.CompareTo(y.Index));
+            }
+
+            if (aMessage.StartTime != double.MaxValue)
+            {
+                stintRecord.StartTime = aMessage.StartTime;
+            }
+
+            if (aMessage.DrivingTime != double.MaxValue)
+            {
+                stintRecord.DrivingTime = aMessage.DrivingTime;
+            }
+
+            stintRecord.DriverId = aMessage.DriverID;
         }
         
         public void SetBackgroundColor(Color carColor)
@@ -636,5 +673,20 @@ namespace HHTiming.Blancpain
             var ts = TimeSpan.FromSeconds(aTime);
             return ts.ToString(format);
         }
+    }
+
+    public class StintRecord
+    {
+        public StintRecord(Guid stintId, int index)
+        {
+            StintId = stintId;
+            Index = index;
+        }
+
+        public Guid StintId { get; }
+        public int Index { get; }
+        public double StartTime { get; set; } = 0;
+        public double DrivingTime { get; set; } = 0;
+        public string DriverId { get; set; }
     }
 }
