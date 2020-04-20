@@ -476,7 +476,7 @@ namespace HHTiming.Blancpain
             }
             else if (anUpdateMessage is UserDefinedSessionLengthUIUpdateMessage sessionMessage)
             {
-                _sessionEndTime = sessionMessage.SessionLength * 3600;
+                _sessionEndTime = sessionMessage.SessionLengthHours * 3600;
             }
 
             if (((BaseUIUpdateMessage)anUpdateMessage).ItemID != CarNumber) return;
