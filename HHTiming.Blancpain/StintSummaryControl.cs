@@ -40,6 +40,7 @@ namespace HHTiming.Blancpain
 
         private double _previousStintTimes = 0;
         private double _stintStartTime = 0;
+        private double _previousStintStartTime = 0;
         private double _stintTime = 0;
         private double _stintTimeUpdated = 0;
 
@@ -65,6 +66,8 @@ namespace HHTiming.Blancpain
 
             tb_CarNumber.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(CarNumber), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_InLapTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(InLapTime), true, DataSourceUpdateMode.OnPropertyChanged));
+            cb_MergeStints.Checked = false;
+            cb_MergeStints.DataBindings.Add(nameof(CheckBoxItem.CheckedBindable), this, nameof(MergeStints), true, DataSourceUpdateMode.OnPropertyChanged);
 
             Name = "Stint Summary";
         }
@@ -87,8 +90,8 @@ namespace HHTiming.Blancpain
 
 
                 _driverTotalTime = 0;
-
                 _previousStintTimes = 0;
+                _previousStintStartTime = 0;
                 _stintStartTime = 0;
                 _stintTimeUpdated = 0;
 
@@ -108,6 +111,23 @@ namespace HHTiming.Blancpain
         public double MaxTotalDrivingTime { get; set; } = 840;
         public int InLapTime { get; set; } = 180;
 
+
+        private bool _mergeStints;
+        public bool MergeStints
+        {
+            get
+            {
+                return _mergeStints;
+            }
+            set
+            {
+                if (_mergeStints == value) return;
+
+
+
+                _mergeStints = value;
+            }
+        }
         public string DriverName
         {
             get
@@ -314,12 +334,12 @@ namespace HHTiming.Blancpain
             {
                 if (_carStatus == eCarStatus.OnTrackRunning || _carStatus == eCarStatus.PitOut)
                 {
-                    double stintTime = _sessionTime - _stintStartTime;
+                    double stintTime = MergeStints ? _sessionTime - _previousStintStartTime : _sessionTime - _stintStartTime;
                     double remainingTime = MaxStintLength * 60 - stintTime;
                     string remainingTimeString = SecondsToTimeString(remainingTime, LongTimeFormat);
 
                     lbl_StintTime.Text = SecondsToTimeString(stintTime, LongTimeFormat);
-                    lbl_TimeAtEnd.Text = SecondsToTimeString(_stintStartTime + MaxStintLength * 60, LongTimeFormat);
+                    lbl_TimeAtEnd.Text = SecondsToTimeString((MergeStints ? _previousStintStartTime : _stintStartTime) + MaxStintLength * 60, LongTimeFormat);
 
                     if (remainingTime > 0)
                     {
@@ -418,7 +438,7 @@ namespace HHTiming.Blancpain
                         lbl_PitWindowContent.Visible = true;
 
                         lbl_PitWindowHeading.Text = "Minimum Stint Time (No Extra Stop)";
-                        lbl_PitWindowContent.Text = SecondsToTimeString(_pitWindowOpenTime - _stintStartTime, LongTimeFormat);
+                        lbl_PitWindowContent.Text = SecondsToTimeString(_pitWindowOpenTime - (MergeStints ? _previousStintStartTime : _stintStartTime), LongTimeFormat);
 
                     }
                 }
@@ -577,6 +597,7 @@ namespace HHTiming.Blancpain
                 if (aMessage.PitOutSessionTime > _stintStartTime)
                 {
                     _stintTime = 0;
+                    _previousStintStartTime = _stintStartTime;
                     _stintStartTime = aMessage.PitOutSessionTime;
                     _stintTimeUpdated = aMessage.PitOutSessionTime;
 
