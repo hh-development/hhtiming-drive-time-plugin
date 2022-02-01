@@ -39,8 +39,10 @@
             this.itemContainer5 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer6 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer7 = new DevComponents.DotNetBar.ItemContainer();
+            this.itemContainer71 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem2 = new DevComponents.DotNetBar.LabelItem();
             this.tb_InLapTime = new DevComponents.DotNetBar.TextBoxItem();
+            this.cb_MergeStints = new DevComponents.DotNetBar.CheckBoxItem();
             this.itemContainer8 = new DevComponents.DotNetBar.ItemContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_BoxNextLapTime = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
@@ -186,6 +188,7 @@
             this.itemContainer5.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer6,
             this.itemContainer7,
+            this.itemContainer71,
             this.itemContainer8});
             // 
             // 
@@ -232,6 +235,28 @@
             this.tb_InLapTime.Text = "textBoxItem2";
             this.tb_InLapTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_InLapTime.WatermarkColor = System.Drawing.SystemColors.GrayText;
+
+            // 
+            // itemContainer71
+            // 
+            // 
+            // 
+            // 
+            this.itemContainer71.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.itemContainer71.Name = "itemContainer71";
+            this.itemContainer71.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.cb_MergeStints});
+            // 
+            // 
+            // 
+            this.itemContainer71.TitleStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+
+            // 
+            // cb_MergeStints
+            // 
+            this.cb_MergeStints.GlobalItem = false;
+            this.cb_MergeStints.Name = "cb_MergeStints";
+            this.cb_MergeStints.Text = "Merge with previous stint";
             // 
             // itemContainer8
             // 
@@ -622,8 +647,10 @@
         private DevComponents.DotNetBar.ItemContainer itemContainer5;
         private DevComponents.DotNetBar.ItemContainer itemContainer6;
         private DevComponents.DotNetBar.ItemContainer itemContainer7;
+        private DevComponents.DotNetBar.ItemContainer itemContainer71;
         private DevComponents.DotNetBar.LabelItem labelItem2;
         private DevComponents.DotNetBar.TextBoxItem tb_InLapTime;
+        private DevComponents.DotNetBar.CheckBoxItem cb_MergeStints;
         private DevComponents.DotNetBar.ItemContainer itemContainer8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_TotalTimeRemaining;
