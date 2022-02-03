@@ -123,9 +123,9 @@ namespace HHTiming.Blancpain
             {
                 if (_mergeStints == value) return;
 
-
-
                 _mergeStints = value;
+                lbl_StintMerged.Visible = _mergeStints;
+
             }
         }
         public string DriverName
@@ -488,6 +488,10 @@ namespace HHTiming.Blancpain
                 _stintTime = 0;
                 _stintTimeUpdated = 0;
                 _pitWindowOpenTime = double.MaxValue;
+
+                cb_MergeStints.Visible = true;
+                cb_MergeStints.Checked = false;
+                lbl_StintMerged.Visible = false;
             }
             else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
             {
@@ -592,10 +596,27 @@ namespace HHTiming.Blancpain
 
         public void HandlePitStopUIUpdateMessage(PitstopUIUpdateMessage aMessage)
         {
+            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn) {
+                cb_MergeStints.SetChecked(false, eEventSource.Mouse);
+                cb_MergeStints.Visible = false;
+                lbl_StintMerged.Visible = false;
+                itemContainer5.Refresh();
+
+            }
+
             if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.NewStop)
             {
+                lbl_StintMerged.Visible = false;
+                cb_MergeStints.Visible = true;
+                cb_MergeStints.SetChecked(false, eEventSource.Mouse);
+                itemContainer5.Refresh();
+
+
+
+
                 if (aMessage.PitOutSessionTime > _stintStartTime)
                 {
+
                     _stintTime = 0;
                     _previousStintStartTime = _stintStartTime;
                     _stintStartTime = aMessage.PitOutSessionTime;
