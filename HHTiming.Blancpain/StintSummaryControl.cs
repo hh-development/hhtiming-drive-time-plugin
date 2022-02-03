@@ -40,6 +40,7 @@ namespace HHTiming.Blancpain
 
         private double _previousStintTimes = 0;
         private double _stintStartTime = 0;
+        private double _previousStintStartTime = 0;
         private double _stintTime = 0;
         private double _stintTimeUpdated = 0;
 
@@ -65,6 +66,8 @@ namespace HHTiming.Blancpain
 
             tb_CarNumber.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(CarNumber), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_InLapTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(InLapTime), true, DataSourceUpdateMode.OnPropertyChanged));
+            cb_MergeStints.Checked = false;
+            cb_MergeStints.DataBindings.Add(nameof(CheckBoxItem.CheckedBindable), this, nameof(MergeStints), true, DataSourceUpdateMode.OnPropertyChanged);
 
             Name = "Stint Summary";
         }
@@ -87,8 +90,8 @@ namespace HHTiming.Blancpain
 
 
                 _driverTotalTime = 0;
-
                 _previousStintTimes = 0;
+                _previousStintStartTime = 0;
                 _stintStartTime = 0;
                 _stintTimeUpdated = 0;
 
@@ -108,6 +111,23 @@ namespace HHTiming.Blancpain
         public double MaxTotalDrivingTime { get; set; } = 840;
         public int InLapTime { get; set; } = 180;
 
+
+        private bool _mergeStints;
+        public bool MergeStints
+        {
+            get
+            {
+                return _mergeStints;
+            }
+            set
+            {
+                if (_mergeStints == value) return;
+
+                _mergeStints = value;
+                lbl_StintMerged.Visible = _mergeStints;
+
+            }
+        }
         public string DriverName
         {
             get
@@ -201,7 +221,7 @@ namespace HHTiming.Blancpain
         public event AddNewWorksheetEventHandler AddNewWorksheet;
         public event RequestCloseWorksheetEventHandler RequestCloseWorksheet;
         public event WorksheetNameChangedEventHandler WorksheetNameChanged;
-        
+
         public bool CloseWorksheet()
         {
             return true;
@@ -314,12 +334,12 @@ namespace HHTiming.Blancpain
             {
                 if (_carStatus == eCarStatus.OnTrackRunning || _carStatus == eCarStatus.PitOut)
                 {
-                    double stintTime = _sessionTime - _stintStartTime;
+                    double stintTime = MergeStints ? _sessionTime - _previousStintStartTime : _sessionTime - _stintStartTime;
                     double remainingTime = MaxStintLength * 60 - stintTime;
                     string remainingTimeString = SecondsToTimeString(remainingTime, LongTimeFormat);
 
                     lbl_StintTime.Text = SecondsToTimeString(stintTime, LongTimeFormat);
-                    lbl_TimeAtEnd.Text = SecondsToTimeString(_stintStartTime + MaxStintLength * 60, LongTimeFormat);
+                    lbl_TimeAtEnd.Text = SecondsToTimeString((MergeStints ? _previousStintStartTime : _stintStartTime) + MaxStintLength * 60, LongTimeFormat);
 
                     if (remainingTime > 0)
                     {
@@ -359,7 +379,7 @@ namespace HHTiming.Blancpain
 
                             lbl_BoxNextLapTime.Text = SecondsToTimeString(nextLap, LongTimeFormat);
 
-                            double lapsRemaining = (MaxStintLength*60 - _stintTime - projectedLapTime) / _averageLapTime;
+                            double lapsRemaining = (MaxStintLength * 60 - _stintTime - projectedLapTime) / _averageLapTime;
                             lbl_LapsRemaining.Text = lapsRemaining.ToString("F1");
 
                             if (lapsRemaining != 0 && lapsRemaining < 1) _boxNow = true;
@@ -418,7 +438,7 @@ namespace HHTiming.Blancpain
                         lbl_PitWindowContent.Visible = true;
 
                         lbl_PitWindowHeading.Text = "Minimum Stint Time (No Extra Stop)";
-                        lbl_PitWindowContent.Text = SecondsToTimeString(_pitWindowOpenTime - _stintStartTime, LongTimeFormat);
+                        lbl_PitWindowContent.Text = SecondsToTimeString(_pitWindowOpenTime - (MergeStints ? _previousStintStartTime : _stintStartTime), LongTimeFormat);
 
                     }
                 }
@@ -431,7 +451,7 @@ namespace HHTiming.Blancpain
 
                     tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
                     lbl_PitWindowContent.Visible = true;
-                    
+
                     lbl_StintTime.Text = "-";
                     lbl_StintTimeRemaining.Text = "-";
                     lbl_TimeAtEnd.Text = "-";
@@ -468,6 +488,10 @@ namespace HHTiming.Blancpain
                 _stintTime = 0;
                 _stintTimeUpdated = 0;
                 _pitWindowOpenTime = double.MaxValue;
+
+                cb_MergeStints.Visible = true;
+                cb_MergeStints.Checked = false;
+                lbl_StintMerged.Visible = false;
             }
             else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
             {
@@ -521,7 +545,7 @@ namespace HHTiming.Blancpain
         }
 
         #endregion
-        
+
         public void HandleCarStatusUIUpdateMessage(CarStatusUIUpdateMessage aMessage)
         {
             _carStatus = aMessage.CarStatus;
@@ -555,7 +579,7 @@ namespace HHTiming.Blancpain
                 double pitWindow = lastForwardStint.StartTime - forwardOffset - (lastReverseStint.StartTime - reverseOffset);
 
                 // Next pit window opens before the end of the current maximum stint
-                _pitWindowOpenTime = firstForwardStint.EndTime - pitWindow - forwardOffset;                
+                _pitWindowOpenTime = firstForwardStint.EndTime - pitWindow - forwardOffset;
             }
 
             if (aMessage.EstimatedRaceFixedStintLengths != null && aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime != double.MaxValue)
@@ -572,11 +596,29 @@ namespace HHTiming.Blancpain
 
         public void HandlePitStopUIUpdateMessage(PitstopUIUpdateMessage aMessage)
         {
+            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn) {
+                cb_MergeStints.SetChecked(false, eEventSource.Mouse);
+                cb_MergeStints.Visible = false;
+                lbl_StintMerged.Visible = false;
+                itemContainer5.Refresh();
+
+            }
+
             if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.NewStop)
             {
+                lbl_StintMerged.Visible = false;
+                cb_MergeStints.Visible = true;
+                cb_MergeStints.SetChecked(false, eEventSource.Mouse);
+                itemContainer5.Refresh();
+
+
+
+
                 if (aMessage.PitOutSessionTime > _stintStartTime)
                 {
+
                     _stintTime = 0;
+                    _previousStintStartTime = _stintStartTime;
                     _stintStartTime = aMessage.PitOutSessionTime;
                     _stintTimeUpdated = aMessage.PitOutSessionTime;
 
@@ -608,6 +650,7 @@ namespace HHTiming.Blancpain
                 {
                     _stintStartTime = aMessage.StartTime;
                     _stintTime = aMessage.DrivingTime;
+                    _stintTime = MergeStints ? _stintTime + _stintStartTime - _previousStintStartTime : _stintTime;
                     _stintTimeUpdated = aMessage.StartTime + aMessage.DrivingTime;
                 }
             }
@@ -620,9 +663,9 @@ namespace HHTiming.Blancpain
                     _previousStintTimes += aMessage.DrivingTime;
                     _stintNumber++;
                 }
-            }            
+            }
         }
-        
+
         public void SetBackgroundColor(Color carColor)
         {
             tableLayoutPanel1.BackColor = carColor;

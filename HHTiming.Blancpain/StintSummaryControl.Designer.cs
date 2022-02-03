@@ -39,8 +39,10 @@
             this.itemContainer5 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer6 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer7 = new DevComponents.DotNetBar.ItemContainer();
+            this.itemContainer71 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem2 = new DevComponents.DotNetBar.LabelItem();
             this.tb_InLapTime = new DevComponents.DotNetBar.TextBoxItem();
+            this.cb_MergeStints = new DevComponents.DotNetBar.CheckBoxItem();
             this.itemContainer8 = new DevComponents.DotNetBar.ItemContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_BoxNextLapTime = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
@@ -61,6 +63,7 @@
             this.labelWithAutoSizeText1 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.lbl_CarNumber = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.lbl_DriverName = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.lbl_StintMerged = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.pnl_PitWindow = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_PitWindowContent = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
@@ -186,6 +189,7 @@
             this.itemContainer5.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer6,
             this.itemContainer7,
+            this.itemContainer71,
             this.itemContainer8});
             // 
             // 
@@ -232,6 +236,28 @@
             this.tb_InLapTime.Text = "textBoxItem2";
             this.tb_InLapTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_InLapTime.WatermarkColor = System.Drawing.SystemColors.GrayText;
+
+            // 
+            // itemContainer71
+            // 
+            // 
+            // 
+            // 
+            this.itemContainer71.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.itemContainer71.Name = "itemContainer71";
+            this.itemContainer71.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.cb_MergeStints});
+            // 
+            // 
+            // 
+            this.itemContainer71.TitleStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+
+            // 
+            // cb_MergeStints
+            // 
+            this.cb_MergeStints.GlobalItem = false;
+            this.cb_MergeStints.Name = "cb_MergeStints";
+            this.cb_MergeStints.Text = "Merge with previous stint";
             // 
             // itemContainer8
             // 
@@ -272,6 +298,7 @@
             this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lbl_CarNumber, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_DriverName, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_StintMerged, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.pnl_PitWindow, 0, 9);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -542,6 +569,21 @@
             this.lbl_DriverName.Text = "Driver Name";
             this.lbl_DriverName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lbl_StintMerged
+            // 
+            this.lbl_StintMerged.AutoSize = true;
+            this.lbl_StintMerged.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_StintMerged.Font = new System.Drawing.Font("Microsoft Sans Serif", 30.07553F);
+            this.lbl_StintMerged.Location = new System.Drawing.Point(115, 0);
+            this.lbl_StintMerged.Name = "lbl_StintMerged";
+            this.lbl_StintMerged.ReferenceText = "";
+            this.lbl_StintMerged.Size = new System.Drawing.Size(442, 56);
+            this.lbl_StintMerged.TabIndex = 2;
+            this.lbl_StintMerged.Text = "Stints Merged";
+            this.lbl_StintMerged.BackColor = System.Drawing.Color.Red;
+            this.lbl_StintMerged.Visible = false;
+            this.lbl_StintMerged.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // pnl_PitWindow
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.pnl_PitWindow, 6);
@@ -622,8 +664,10 @@
         private DevComponents.DotNetBar.ItemContainer itemContainer5;
         private DevComponents.DotNetBar.ItemContainer itemContainer6;
         private DevComponents.DotNetBar.ItemContainer itemContainer7;
+        private DevComponents.DotNetBar.ItemContainer itemContainer71;
         private DevComponents.DotNetBar.LabelItem labelItem2;
         private DevComponents.DotNetBar.TextBoxItem tb_InLapTime;
+        private DevComponents.DotNetBar.CheckBoxItem cb_MergeStints;
         private DevComponents.DotNetBar.ItemContainer itemContainer8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_TotalTimeRemaining;
@@ -641,6 +685,7 @@
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText1;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_CarNumber;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_DriverName;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_StintMerged;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_BoxNextLapTime;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_BoxThisLapTime;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText6;
