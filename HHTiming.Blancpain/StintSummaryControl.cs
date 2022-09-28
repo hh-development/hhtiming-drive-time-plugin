@@ -66,6 +66,8 @@ namespace HHTiming.Blancpain
 
             tb_CarNumber.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(CarNumber), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_InLapTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(InLapTime), true, DataSourceUpdateMode.OnPropertyChanged));
+            tb_StintTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(MaxStintLength), true, DataSourceUpdateMode.OnPropertyChanged));
+
             cb_MergeStints.Checked = false;
             cb_MergeStints.DataBindings.Add(nameof(CheckBoxItem.CheckedBindable), this, nameof(MergeStints), true, DataSourceUpdateMode.OnPropertyChanged);
 
@@ -263,6 +265,10 @@ namespace HHTiming.Blancpain
                     case "InLapTime":
                         InLapTime = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
                         break;
+                    case "MaxStintLength":
+                        MaxStintLength = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
+                        break;
+
                 }
             }
         }
@@ -274,6 +280,7 @@ namespace HHTiming.Blancpain
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MaxContinuousDrivingTime", MaxContinuousDrivingTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MaxTotalDrivingTime", MaxTotalDrivingTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "InLapTime", InLapTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
+            XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MaxStintLength", MaxStintLength.ToString(CultureInfo.InvariantCulture), parentXMLElement);
         }
 
         #endregion
@@ -596,7 +603,8 @@ namespace HHTiming.Blancpain
 
         public void HandlePitStopUIUpdateMessage(PitstopUIUpdateMessage aMessage)
         {
-            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn) {
+            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn)
+            {
                 cb_MergeStints.SetChecked(false, eEventSource.Mouse);
                 cb_MergeStints.Visible = false;
                 lbl_StintMerged.Visible = false;
