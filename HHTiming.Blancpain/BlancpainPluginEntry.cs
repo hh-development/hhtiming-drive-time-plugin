@@ -71,7 +71,9 @@ namespace HHTiming.Blancpain
             }
         }
 
+#pragma warning disable 0067
         public event EventHandler<CreateNewProjectObjectEventArgs> AddNewProjectItem;
+#pragma warning restore 0067
         public event EventHandler<NewWorksheetEventArgs> AddNewWorksheet;
 
         public List<IUIUpdateControl> GetAllBackgroundUIUpdateControls()

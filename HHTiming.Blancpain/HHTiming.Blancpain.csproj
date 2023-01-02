@@ -1,152 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{950F8C92-7E3F-4F11-B0F3-2B54B9DF0E9E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HHTiming.Blancpain</RootNamespace>
-    <AssemblyName>HHTiming.Blancpain</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="DevComponents.DotNetBar.Layout, Version=12.7.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\DevComponents.DotNetBar.Layout.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\DevComponents.DotNetBar.Layout.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevComponents.DotNetBar2, Version=12.7.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\DevComponents.DotNetBar2.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\DevComponents.DotNetBar2.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHDev.Core.NETStandard">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHDev.Core.NETStandard.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHDev.Core.NETStandard.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHDev.Core.WinForms">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHDev.Core.WinForms.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHDev.Core.WinForms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHDev.ProjectFramework.Definitions">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHDev.ProjectFramework.Definitions.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHDev.ProjectFramework.Definitions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHTiming.Core.Definitions">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.Core.Definitions.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.Core.Definitions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHTiming.DAL">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.DAL.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.DAL.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHTiming.Desktop.Definitions">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.Desktop.Definitions.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.Desktop.Definitions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HHTiming.WinFormsControls">
-      <HintPath Condition="Exists('C:\Program Files (x86)\HH Development\HH Timing')">C:\Program Files (x86)\HH Development\HH Timing\HHTiming.WinFormsControls.dll</HintPath>
-      <HintPath Condition="Exists('..\..\desktop\HHTiming.Desktop\bin\$(Configuration)')">..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\HHTiming.WinFormsControls.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BlancpainPluginEntry.cs" />
-    <Compile Include="GetCarNumberForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GetCarNumberForm.designer.cs">
-      <DependentUpon>GetCarNumberForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StintSummaryControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="StintSummaryControl.Designer.cs">
-      <DependentUpon>StintSummaryControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PitStopwatchControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PitStopwatchControl.Designer.cs">
-      <DependentUpon>PitStopwatchControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="GetCarNumberForm.resx">
-      <DependentUpon>GetCarNumberForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StintSummaryControl.resx">
-      <DependentUpon>StintSummaryControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PitStopwatchControl.resx">
-      <DependentUpon>PitStopwatchControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DrivingTime_48.png" />
-    <None Include="Resources\PitStopwatch_48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\StintSummary_48.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  -->
-  <!--<Target Name="AfterBuild">    
-  </Target>-->
-  <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Debug if not exist "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain" mkdir "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain"
-if $(ConfigurationName) == Debug copy /y "$(TargetDir)" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain"</PostBuildEvent>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Configurations>Debug;Release;DebugFull</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="DevComponents.DotNetBar">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\DevComponents.DotNetBar.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHDev.Core.NETStandard">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.Core.NETStandard.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHDev.Core.WinForms">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.Core.WinForms.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHDev.Core.NETFramework">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.Core.NETFramework.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHDev.ProjectFramework.Definitions">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.ProjectFramework.Definitions.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHTiming.Core.Definitions">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.Core.Definitions.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHTiming.DAL">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.DAL.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHTiming.WinFormsControls">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.WinFormsControls.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="HHTiming.Desktop.Definitions">
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.Desktop.Definitions.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if $(Configuration) == Debug if not exist &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain&quot; mkdir &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain&quot;&#xD;&#xA;if $(Configuration) == Debug copy /y &quot;$(TargetDir)&quot; &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain&quot;" />
+	</Target>
+
 </Project>

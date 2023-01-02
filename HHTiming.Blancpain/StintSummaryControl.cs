@@ -218,8 +218,10 @@ namespace HHTiming.Blancpain
             }
         }
 
+#pragma warning disable 0067
         public event AddNewWorksheetEventHandler AddNewWorksheet;
         public event RequestCloseWorksheetEventHandler RequestCloseWorksheet;
+#pragma warning restore 0067
         public event WorksheetNameChangedEventHandler WorksheetNameChanged;
 
         public bool CloseWorksheet()
