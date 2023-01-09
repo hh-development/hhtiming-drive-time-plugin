@@ -1,4 +1,4 @@
-﻿namespace HHTiming.Blancpain
+﻿namespace HHTiming.DriveTime
 {
     partial class GetCarNumberForm
     {

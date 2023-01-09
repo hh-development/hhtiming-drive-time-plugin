@@ -52,7 +52,7 @@
 
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if $(Configuration) == Debug if not exist &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain&quot; mkdir &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain&quot;&#xD;&#xA;if $(Configuration) == Debug copy /y &quot;$(TargetDir)&quot; &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\Blancpain&quot;" />
+		<Exec Command="if $(Configuration) == Debug if not exist &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\DriveTime&quot; mkdir &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\DriveTime&quot;&#xD;&#xA;if $(Configuration) == Debug copy /y &quot;$(TargetDir)&quot; &quot;$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\HH Timing\Plugins\DriveTime&quot;" />
 	</Target>
 
 </Project>

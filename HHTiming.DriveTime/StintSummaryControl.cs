@@ -18,7 +18,7 @@ using HHTiming.Desktop.Definitions.PlugInFramework;
 using HHTiming.Desktop.Definitions.Worksheet;
 using HHTiming.WinFormsControls.Workbook;
 
-namespace HHTiming.Blancpain
+namespace HHTiming.DriveTime
 {
     public partial class StintSummaryControl :
         UserControl,

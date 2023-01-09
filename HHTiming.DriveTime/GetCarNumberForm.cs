@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HHTiming.Blancpain
+namespace HHTiming.DriveTime
 {
     public partial class GetCarNumberForm : BaseHHForm
     {

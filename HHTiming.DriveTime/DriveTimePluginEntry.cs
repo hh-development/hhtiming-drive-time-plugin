@@ -9,13 +9,13 @@ using HHTiming.Core.Definitions.UIUpdate.Interfaces;
 using HHTiming.DAL;
 using System.Windows.Forms;
 
-namespace HHTiming.Blancpain
+namespace HHTiming.DriveTime
 {
-    class BlancpainPluginEntry : IHHTimingPlugin
+    class DriveTimePluginEntry : IHHTimingPlugin
     {
         private List<HHRibbonTab> _ribbonTabs = new List<HHRibbonTab>();
 
-        public BlancpainPluginEntry()
+        public DriveTimePluginEntry()
         {
             BuildRibbonTabs();
         }
@@ -34,7 +34,7 @@ namespace HHTiming.Blancpain
         {
             get
             {
-                return "Blancpain";
+                return "Drive Time";
             }
         }
 
@@ -123,10 +123,10 @@ namespace HHTiming.Blancpain
 
         private void BuildRibbonTabs()
         {
-            var tab = new HHRibbonTab("Blancpain");
+            var tab = new HHRibbonTab("Drive Time");
             _ribbonTabs.Add(tab);
 
-            var bar = new HHRibbonBar("Strategy Tools");
+            var bar = new HHRibbonBar("Tools");
             tab.Bars.Add(bar);
 
             var createNewStintSummaryButton = new HHRibbonButton("Stint Summary", Properties.Resources.StintSummary_48, HandleCreateNewStintSummary);
