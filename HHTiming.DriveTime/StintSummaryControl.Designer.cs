@@ -42,6 +42,8 @@
             this.itemContainer71 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem2 = new DevComponents.DotNetBar.LabelItem();
             this.tb_InLapTime = new DevComponents.DotNetBar.TextBoxItem();
+            this.labelItemStintTime = new DevComponents.DotNetBar.LabelItem();
+            this.tb_StintTime = new DevComponents.DotNetBar.TextBoxItem();
             this.cb_MergeStints = new DevComponents.DotNetBar.CheckBoxItem();
             this.itemContainer8 = new DevComponents.DotNetBar.ItemContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -218,7 +220,9 @@
             this.itemContainer7.Name = "itemContainer7";
             this.itemContainer7.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.labelItem2,
-            this.tb_InLapTime});
+            this.tb_InLapTime,
+            this.labelItemStintTime,
+            this.tb_StintTime});            
             // 
             // 
             // 
@@ -236,6 +240,21 @@
             this.tb_InLapTime.Text = "textBoxItem2";
             this.tb_InLapTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_InLapTime.WatermarkColor = System.Drawing.SystemColors.GrayText;
+
+            // 
+            // labelItemStintTime
+            // 
+            this.labelItemStintTime.Name = "labelItemStintTime";
+            this.labelItemStintTime.Text = "Max Stint Time (min):";
+            // 
+            // tb_InLapTime
+            // 
+            this.tb_StintTime.GlobalItem = false;
+            this.tb_StintTime.Name = "tb_StintTime";
+            this.tb_StintTime.Text = "tb_StintTime";
+            this.tb_StintTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tb_StintTime.WatermarkColor = System.Drawing.SystemColors.GrayText;
+
 
             // 
             // itemContainer71
@@ -667,6 +686,8 @@
         private DevComponents.DotNetBar.ItemContainer itemContainer71;
         private DevComponents.DotNetBar.LabelItem labelItem2;
         private DevComponents.DotNetBar.TextBoxItem tb_InLapTime;
+        private DevComponents.DotNetBar.LabelItem labelItemStintTime;
+        private DevComponents.DotNetBar.TextBoxItem tb_StintTime;
         private DevComponents.DotNetBar.CheckBoxItem cb_MergeStints;
         private DevComponents.DotNetBar.ItemContainer itemContainer8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
