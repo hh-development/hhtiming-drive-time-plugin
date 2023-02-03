@@ -8,6 +8,7 @@ using HHDev.ProjectFramework.Definitions;
 using HHTiming.Core.Definitions.UIUpdate.Interfaces;
 using HHTiming.DAL;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace HHTiming.DriveTime
 {
@@ -132,6 +133,13 @@ namespace HHTiming.DriveTime
             var createNewStintSummaryButton = new HHRibbonButton("Stint Summary", Properties.Resources.StintSummary_48, HandleCreateNewStintSummary);
             bar.Buttons.Add(createNewStintSummaryButton);
 
+            var createNewContinuousDrivingTime = new HHRibbonButton("Continuous Driving Time", Properties.Resources.StintSummary_48, HandleCreateNewContinuousDrivingTime);
+            bar.Buttons.Add(createNewContinuousDrivingTime);
+
+            var createNewCumulativeDrivingTime = new HHRibbonButton("Cumulative Driving Time", Properties.Resources.StintSummary_48, HandleCreateNewCumulativeDrivingTime);
+            bar.Buttons.Add(createNewCumulativeDrivingTime);
+
+
             var createNewPitStopwatchButton = new HHRibbonButton("Pit Stopwatch", Properties.Resources.PitStopwatch_48, HandleCreateNewPitStopwatch);
             bar.Buttons.Add(createNewPitStopwatchButton);
         }
@@ -157,5 +165,32 @@ namespace HHTiming.DriveTime
                 TargetWorkbook = sender
             });
         }
+
+        private void HandleCreateNewContinuousDrivingTime(object sender)
+        {
+            var carForm = new GetCarNumberForm();
+            if (carForm.ShowDialog() != DialogResult.OK)
+                return;
+
+            AddNewWorksheet?.Invoke(this, new NewWorksheetEventArgs()
+            {
+                NewWorksheet = new ContinuousDrivingTimeControl(carForm.CarID),
+                TargetWorkbook = sender
+            });
+        }
+
+        private void HandleCreateNewCumulativeDrivingTime(object sender)
+        {
+            var carForm = new GetCarNumberForm();
+            if (carForm.ShowDialog() != DialogResult.OK)
+                return;
+
+            AddNewWorksheet?.Invoke(this, new NewWorksheetEventArgs()
+            {
+                NewWorksheet = new CumulativeDrivingTimeControl(carForm.CarID),
+                TargetWorkbook = sender
+            });
+        }
+
     }
 }
