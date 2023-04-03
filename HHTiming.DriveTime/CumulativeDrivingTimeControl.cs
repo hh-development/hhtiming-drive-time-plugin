@@ -51,6 +51,9 @@ namespace HHTiming.DriveTime
 
         private const string LongTimeFormat = @"h\:mm\:ss";
 
+        private Dictionary<string, string> _driverCategorisation;
+
+
         public CumulativeDrivingTimeControl()
         {
             InitializeComponent();
@@ -66,7 +69,7 @@ namespace HHTiming.DriveTime
             tb_MinimumDrivingTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(MinimumDrivingTime), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_MaximumDrivingTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(MaximumDrivingTime), true, DataSourceUpdateMode.OnPropertyChanged));
 
-
+            _driverCategorisation = new Dictionary<string, string>();
             Name = "Cumulative Driving Time";
         }
 
@@ -74,6 +77,7 @@ namespace HHTiming.DriveTime
         {
             _carNumber = carNumber;
             lbl_CarNumber.Text = carNumber;
+
         }
 
         public string CarNumber
@@ -477,7 +481,43 @@ namespace HHTiming.DriveTime
                 _sessionTime = 0;
                 //_stintNumber = 0;
                 _driverStartTime = 0;
+                _driverCategorisation.Clear();
 
+            }
+            else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
+            {
+                if (_driverCategorisation.ContainsKey(DriverName))
+                {
+                    switch (_driverCategorisation[DriverName].ToLower())
+                    {
+                        case "platinum":
+                            MaximumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxTotalDrivingTimeP;
+                            MinimumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MinTotalDrivingTimeP;
+                            break;
+                        case "gold":
+                            MaximumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxTotalDrivingTimeG;
+                            MinimumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MinTotalDrivingTimeG;
+                            break;
+                        case "silver":
+                            MaximumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxTotalDrivingTimeS;
+                            MinimumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MinTotalDrivingTimeS;
+                            break;
+                        case "bronze":
+                            MaximumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxTotalDrivingTimeB;
+                            MinimumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MinTotalDrivingTimeB;
+                            break;
+                        default:
+                            MaximumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxTotalDrivingTime;
+                            MinimumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MinTotalDrivingTime;
+
+                            break;
+                    }
+                }
+                else
+                {
+                    MaximumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxTotalDrivingTime;
+                    MinimumDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MinTotalDrivingTime;
+                }
             }
             else if (anUpdateMessage is UserDefinedSessionLengthUIUpdateMessage sessionMessage)
             {
@@ -498,6 +538,11 @@ namespace HHTiming.DriveTime
             {
                 HandleCurrentDriverUIUpdateMessage((CurrentDriverUIUpdateMessage)anUpdateMessage);
             }
+            else if (anUpdateMessage is DriverUIUpdateMessage)
+            {
+                HandleDriverUIUpdateMessage((DriverUIUpdateMessage)anUpdateMessage);
+            }
+
             //else if (anUpdateMessage is DriverOverrideUIUpdateMessage)
             //{
             //    _stintNumber = 0;
@@ -537,6 +582,13 @@ namespace HHTiming.DriveTime
             _carColor = aMessage.CarColor;
             SetBackgroundColor(_carColor);
         }
+
+        public void HandleDriverUIUpdateMessage(DriverUIUpdateMessage aMessage)
+        {
+            _driverCategorisation[aMessage.DriverName] = aMessage.DriverCategorisation;
+        }
+
+
 
         public void HandleCurrentDriverUIUpdateMessage(CurrentDriverUIUpdateMessage aMessage)
         {
