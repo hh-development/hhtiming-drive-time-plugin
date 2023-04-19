@@ -50,6 +50,7 @@ namespace HHTiming.DriveTime
 
         private const string LongTimeFormat = @"h\:mm\:ss";
 
+        private Dictionary<string, string> _driverCategorisation;
         public ContinuousDrivingTimeControl()
         {
             InitializeComponent();
@@ -64,6 +65,7 @@ namespace HHTiming.DriveTime
             tb_InLapTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(InLapTime), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_ContinuousDrivingTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(MaxContinuousDrivingTime), true, DataSourceUpdateMode.OnPropertyChanged));
 
+            _driverCategorisation = new Dictionary<string, string>();
 
             Name = "Continuous Driving Time";
         }
@@ -92,6 +94,8 @@ namespace HHTiming.DriveTime
                 _averageLapTime = 0;
 
                 //_stintNumber = 0;
+
+                _driverCategorisation.Clear();
 
                 _carNumber = value;
                 lbl_CarNumber.Text = _carNumber;
@@ -512,10 +516,48 @@ namespace HHTiming.DriveTime
             {
                 HandleEstimatedTimeRemainingUIUpdateMessage((EstimatedTimeRemainingUIUpdateMessage)anUpdateMessage);
             }
+            else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
+            {
+                if (_driverCategorisation.ContainsKey(DriverName))
+                {
+                    switch (_driverCategorisation[DriverName].ToLower())
+                    {
+                        case "platinum":
+                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeP;
+                            break;
+                        case "gold":
+                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeG;
+                            break;
+                        case "silver":
+                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeS;
+                            break;
+                        case "bronze":
+                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeB;
+                            break;
+                        default:
+                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTime;
+
+                            break;
+                    }
+                }
+                else
+                {
+                    MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTime;
+                }
+            }
+            else if (anUpdateMessage is DriverUIUpdateMessage)
+            {
+                HandleDriverUIUpdateMessage((DriverUIUpdateMessage)anUpdateMessage);
+            }
         }
 
 
         #endregion
+
+        public void HandleDriverUIUpdateMessage(DriverUIUpdateMessage aMessage)
+        {
+            _driverCategorisation[aMessage.DriverName] = aMessage.DriverCategorisation;
+        }
 
         public void HandleCarStatusUIUpdateMessage(CarStatusUIUpdateMessage aMessage)
         {
