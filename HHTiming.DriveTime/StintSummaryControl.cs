@@ -571,14 +571,16 @@ namespace HHTiming.DriveTime
             _driverTotalTime = 0;
         }
 
+        
+
         public void HandleEstimatedTimeRemainingUIUpdateMessage(EstimatedTimeRemainingUIUpdateMessage aMessage)
         {
-            if (aMessage.AlternateEstimatedRaceFixedStintLengths != null && aMessage.AlternateEstimatedRaceFixedStintLengths.EstimatedStints.Count > 0 &&
-                aMessage.EstimatedRaceFixedStintLengths != null && aMessage.EstimatedRaceFixedStintLengths.EstimatedStints.Count > 0)
+            if (aMessage.AlternateEstimatedRace != null && aMessage.AlternateEstimatedRace.EstimatedStints.Count > 0 &&
+                aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedStints.Count > 0)
             {
-                EstimatedStint firstForwardStint = aMessage.EstimatedRaceFixedStintLengths.EstimatedStints.First();
-                EstimatedStint lastForwardStint = aMessage.EstimatedRaceFixedStintLengths.EstimatedStints.Last();
-                EstimatedStint lastReverseStint = aMessage.AlternateEstimatedRaceFixedStintLengths.EstimatedStints.Last();
+                EstimatedStint firstForwardStint = aMessage.CurrentEstimatedRace.EstimatedStints.First();
+                EstimatedStint lastForwardStint = aMessage.CurrentEstimatedRace.EstimatedStints.Last();
+                EstimatedStint lastReverseStint = aMessage.AlternateEstimatedRace.EstimatedStints.Last();
 
                 double forwardOffset = lastForwardStint.EndTime - _sessionEndTime;
                 double reverseOffset = lastReverseStint.EndTime - _sessionEndTime;
@@ -586,15 +588,14 @@ namespace HHTiming.DriveTime
                 // Pit window is difference between final stint start times adjusted for race end
                 double pitWindow = lastForwardStint.StartTime - forwardOffset - (lastReverseStint.StartTime - reverseOffset);
 
-                // Next pit window opens before the end of the current maximum stint
-                _pitWindowOpenTime = firstForwardStint.EndTime - pitWindow - forwardOffset;
             }
 
-            if (aMessage.EstimatedRaceFixedStintLengths != null && aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime != double.MaxValue)
+            if (aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedLapTime != double.MaxValue)
             {
-                _averageLapTime = aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime;
+                _averageLapTime = aMessage.CurrentEstimatedRace.EstimatedLapTime;
             }
         }
+
 
         public void HandleLapUIUpdateMessage(LapUIUpdateMessage message)
         {

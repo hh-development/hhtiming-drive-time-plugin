@@ -536,12 +536,12 @@ namespace HHTiming.DriveTime
 
         public void HandleEstimatedTimeRemainingUIUpdateMessage(EstimatedTimeRemainingUIUpdateMessage aMessage)
         {
-            if (aMessage.AlternateEstimatedRaceFixedStintLengths != null && aMessage.AlternateEstimatedRaceFixedStintLengths.EstimatedStints.Count > 0 &&
-                aMessage.EstimatedRaceFixedStintLengths != null && aMessage.EstimatedRaceFixedStintLengths.EstimatedStints.Count > 0)
+            if (aMessage.AlternateEstimatedRace != null && aMessage.AlternateEstimatedRace.EstimatedStints.Count > 0 &&
+                aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedStints.Count > 0)
             {
-                EstimatedStint firstForwardStint = aMessage.EstimatedRaceFixedStintLengths.EstimatedStints.First();
-                EstimatedStint lastForwardStint = aMessage.EstimatedRaceFixedStintLengths.EstimatedStints.Last();
-                EstimatedStint lastReverseStint = aMessage.AlternateEstimatedRaceFixedStintLengths.EstimatedStints.Last();
+                EstimatedStint firstForwardStint = aMessage.CurrentEstimatedRace.EstimatedStints.First();
+                EstimatedStint lastForwardStint = aMessage.CurrentEstimatedRace.EstimatedStints.Last();
+                EstimatedStint lastReverseStint = aMessage.AlternateEstimatedRace.EstimatedStints.Last();
 
                 double forwardOffset = lastForwardStint.EndTime - _sessionEndTime;
                 double reverseOffset = lastReverseStint.EndTime - _sessionEndTime;
@@ -551,9 +551,9 @@ namespace HHTiming.DriveTime
 
             }
 
-            if (aMessage.EstimatedRaceFixedStintLengths != null && aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime != double.MaxValue)
+            if (aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedLapTime != double.MaxValue)
             {
-                _averageLapTime = aMessage.EstimatedRaceFixedStintLengths.EstimatedLapTime;
+                _averageLapTime = aMessage.CurrentEstimatedRace.EstimatedLapTime;
             }
         }
 
