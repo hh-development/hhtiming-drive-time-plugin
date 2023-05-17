@@ -133,11 +133,11 @@ namespace HHTiming.DriveTime
             var createNewStintSummaryButton = new HHRibbonButton("Stint Summary", Properties.Resources.StintSummary_48, HandleCreateNewStintSummary);
             bar.Buttons.Add(createNewStintSummaryButton);
 
-            //var createNewContinuousDrivingTime = new HHRibbonButton("Continuous Driving Time", Properties.Resources.StintSummary_48, HandleCreateNewContinuousDrivingTime);
-            //bar.Buttons.Add(createNewContinuousDrivingTime);
+            var createNewContinuousDrivingTime = new HHRibbonButton("Continuous Driving Time (Experimental)", Properties.Resources.StintSummary_48, HandleCreateNewContinuousDrivingTime);
+            bar.Buttons.Add(createNewContinuousDrivingTime);
 
-            //var createNewCumulativeDrivingTime = new HHRibbonButton("Cumulative Driving Time", Properties.Resources.StintSummary_48, HandleCreateNewCumulativeDrivingTime);
-            //bar.Buttons.Add(createNewCumulativeDrivingTime);
+            var createNewCumulativeDrivingTime = new HHRibbonButton("Cumulative Driving Time (Experimental)", Properties.Resources.StintSummary_48, HandleCreateNewCumulativeDrivingTime);
+            bar.Buttons.Add(createNewCumulativeDrivingTime);
 
 
             var createNewPitStopwatchButton = new HHRibbonButton("Pit Stopwatch", Properties.Resources.PitStopwatch_48, HandleCreateNewPitStopwatch);
