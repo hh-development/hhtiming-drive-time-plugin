@@ -40,6 +40,7 @@ namespace HHTiming.DriveTime
 
         private double _driverStartTime = 0;
         private double _continuousDrivingTime = 0;
+        private double _driverTimeInPitsSinceInCar = 0;
 
         private double _projectedLapTime = 0;
         private double _averageLapTime = 0;
@@ -311,12 +312,13 @@ namespace HHTiming.DriveTime
             {
                 if (_carStatus == eCarStatus.OnTrackRunning || _carStatus == eCarStatus.PitOut)
                 {
-                    double continuousDrivingTime = _sessionTime - _driverStartTime;
+
+                    double continuousDrivingTime = _sessionTime - _driverStartTime - _driverTimeInPitsSinceInCar;
                     double remainingTime = MaxContinuousDrivingTime * 60 - continuousDrivingTime;
                     string remainingTimeString = SecondsToTimeString(remainingTime, LongTimeFormat);
 
                     lbl_ContinuousDrivingTime.Text = SecondsToTimeString(continuousDrivingTime, LongTimeFormat);
-                    lbl_TimeAtEnd.Text = SecondsToTimeString(_driverStartTime + MaxContinuousDrivingTime * 60, LongTimeFormat);
+                    lbl_TimeAtEnd.Text = SecondsToTimeString(_driverStartTime + MaxContinuousDrivingTime * 60 + _driverTimeInPitsSinceInCar, LongTimeFormat);
 
                     if (remainingTime > 0)
                     {
@@ -587,7 +589,7 @@ namespace HHTiming.DriveTime
 
         public void HandleLapUIUpdateMessage(LapUIUpdateMessage message)
         {
-            _continuousDrivingTime = message.ElapsedTime - _driverStartTime;
+            _continuousDrivingTime = message.ElapsedTime - _driverStartTime - _driverTimeInPitsSinceInCar;
 
             _driverTotalTime = message.DrivingTimeforCurrentDriverAtEndOfLap;
         }
@@ -611,8 +613,13 @@ namespace HHTiming.DriveTime
 
                     _continuousDrivingTime = 0;
                     _driverStartTime = aMessage.PitOutSessionTime;
-
+                    _driverTimeInPitsSinceInCar = 0;
                     DriverName = aMessage.OutDriverName;
+                }
+                else if (aMessage.PitOutSessionTime > _driverStartTime)
+                {
+                    // pitstop, driver stayed in car
+                    _driverTimeInPitsSinceInCar += aMessage.StopTime;
                 }
 
                 _boxNow = false;
