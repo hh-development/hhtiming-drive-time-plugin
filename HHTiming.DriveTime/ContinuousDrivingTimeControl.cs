@@ -103,6 +103,7 @@ namespace HHTiming.DriveTime
             }
         }
 
+        public Dictionary<string, double> MaxContinuousDrivingTimeDictionnary { get; set; } = new Dictionary<string, double>();
         public double MaxContinuousDrivingTime { get; set; } = 195;
         public int InLapTime { get; set; } = 180;
 
@@ -477,7 +478,18 @@ namespace HHTiming.DriveTime
             {
                 _sessionEndTime = sessionMessage.SessionLengthHours * 3600;
             }
+            else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
+            {
 
+                MaxContinuousDrivingTimeDictionnary["platinum"] = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeP;
+                MaxContinuousDrivingTimeDictionnary["gold"] = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeG;
+                MaxContinuousDrivingTimeDictionnary["silver"] = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeS;
+                MaxContinuousDrivingTimeDictionnary["bronze"] = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeB;
+                MaxContinuousDrivingTimeDictionnary["default"] = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTime;
+                UpdateMaxContinuousDrivingTime();
+
+
+            }
             if (((BaseUIUpdateMessage)anUpdateMessage).ItemID != CarNumber) return;
 
             if (anUpdateMessage is CarUIUpdateMessage)
@@ -516,35 +528,7 @@ namespace HHTiming.DriveTime
             {
                 HandleEstimatedTimeRemainingUIUpdateMessage((EstimatedTimeRemainingUIUpdateMessage)anUpdateMessage);
             }
-            else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
-            {
-                if (_driverCategorisation.ContainsKey(DriverName))
-                {
-                    switch (_driverCategorisation[DriverName].ToLower())
-                    {
-                        case "platinum":
-                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeP;
-                            break;
-                        case "gold":
-                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeG;
-                            break;
-                        case "silver":
-                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeS;
-                            break;
-                        case "bronze":
-                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTimeB;
-                            break;
-                        default:
-                            MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTime;
-
-                            break;
-                    }
-                }
-                else
-                {
-                    MaxContinuousDrivingTime = ((TrackOptionsUIUpdateMessage)anUpdateMessage).MaxContinuousDrivingTime;
-                }
-            }
+            
             else if (anUpdateMessage is DriverUIUpdateMessage)
             {
                 HandleDriverUIUpdateMessage((DriverUIUpdateMessage)anUpdateMessage);
@@ -557,6 +541,7 @@ namespace HHTiming.DriveTime
         public void HandleDriverUIUpdateMessage(DriverUIUpdateMessage aMessage)
         {
             _driverCategorisation[aMessage.DriverName] = aMessage.DriverCategorisation;
+            UpdateMaxContinuousDrivingTime();
         }
 
         public void HandleCarStatusUIUpdateMessage(CarStatusUIUpdateMessage aMessage)
@@ -574,6 +559,7 @@ namespace HHTiming.DriveTime
         {
             DriverName = aMessage.DriverName;
             _driverTotalTime = 0;
+            UpdateMaxContinuousDrivingTime();
         }
 
         public void HandleEstimatedTimeRemainingUIUpdateMessage(EstimatedTimeRemainingUIUpdateMessage aMessage)
@@ -665,6 +651,18 @@ namespace HHTiming.DriveTime
         //        }
         //    }
         //}
+
+        private void UpdateMaxContinuousDrivingTime()
+        {
+            if (_driverCategorisation.ContainsKey(DriverName) && MaxContinuousDrivingTimeDictionnary.ContainsKey(_driverCategorisation[DriverName].ToLower()))
+            {
+                MaxContinuousDrivingTime = MaxContinuousDrivingTimeDictionnary[_driverCategorisation[DriverName].ToLower()];
+            }
+            else
+            {
+                MaxContinuousDrivingTime = MaxContinuousDrivingTimeDictionnary["default"];
+            }
+        }
 
         public void SetBackgroundColor(Color carColor)
         {
