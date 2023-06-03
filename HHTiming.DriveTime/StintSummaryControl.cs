@@ -587,7 +587,8 @@ namespace HHTiming.DriveTime
 
                 // Pit window is difference between final stint start times adjusted for race end
                 double pitWindow = lastForwardStint.StartTime - forwardOffset - (lastReverseStint.StartTime - reverseOffset);
-
+                // Next pit window opens before the end of the current maximum stint
+                _pitWindowOpenTime = firstForwardStint.EndTime - pitWindow - forwardOffset;
             }
 
             if (aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedLapTime != double.MaxValue)
