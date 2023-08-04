@@ -45,8 +45,11 @@
             this.itemContainer13 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer14 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer15 = new DevComponents.DotNetBar.ItemContainer();
+            this.itemContainer152 = new DevComponents.DotNetBar.ItemContainer();
             this.labelItem9 = new DevComponents.DotNetBar.LabelItem();
+            this.labelItem92 = new DevComponents.DotNetBar.LabelItem();
             this.tb_InLapTime = new DevComponents.DotNetBar.TextBoxItem();
+            this.tb_CountDownDuration = new DevComponents.DotNetBar.TextBoxItem();
             this.itemContainer16 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer8 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer9 = new DevComponents.DotNetBar.ItemContainer();
@@ -290,6 +293,7 @@
             this.itemContainer13.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer14,
             this.itemContainer15,
+            this.itemContainer152,
             this.itemContainer16});
             // 
             // 
@@ -328,6 +332,7 @@
             // 
             this.labelItem9.Name = "labelItem9";
             this.labelItem9.Text = "Estimated In Lap Time (sec):";
+            this.labelItem9.Width = 160;
             // 
             // tb_InLapTime
             // 
@@ -335,6 +340,36 @@
             this.tb_InLapTime.Name = "tb_InLapTime";
             this.tb_InLapTime.Text = "tb_InLapTime";
             this.tb_InLapTime.WatermarkColor = System.Drawing.SystemColors.GrayText;
+
+            // 
+            // itemContainer152
+            // 
+            // 
+            // 
+            // 
+            this.itemContainer152.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.itemContainer152.Name = "itemContainer152";
+            this.itemContainer152.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.labelItem92,
+            this.tb_CountDownDuration});
+            // 
+            // 
+            // 
+            this.itemContainer152.TitleStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            // 
+            // labelItem92
+            // 
+            this.labelItem92.Name = "labelItem92";
+            this.labelItem92.Text = "Countdown Duration (sec):";
+            this.labelItem92.Width = 160;
+
+            // 
+            // tb_CountDownDuration
+            // 
+            this.tb_CountDownDuration.GlobalItem = false;
+            this.tb_CountDownDuration.Name = "tb_CountDownDuration";
+            this.tb_CountDownDuration.Text = "tb_CountDownDuration";
+            this.tb_CountDownDuration.WatermarkColor = System.Drawing.SystemColors.GrayText;
             // 
             // itemContainer16
             // 
@@ -686,8 +721,11 @@
         private DevComponents.DotNetBar.ItemContainer itemContainer13;
         private DevComponents.DotNetBar.ItemContainer itemContainer14;
         private DevComponents.DotNetBar.ItemContainer itemContainer15;
+        private DevComponents.DotNetBar.ItemContainer itemContainer152;
         private DevComponents.DotNetBar.LabelItem labelItem9;
+        private DevComponents.DotNetBar.LabelItem labelItem92;
         private DevComponents.DotNetBar.TextBoxItem tb_InLapTime;
+        private DevComponents.DotNetBar.TextBoxItem tb_CountDownDuration;
         private DevComponents.DotNetBar.ItemContainer itemContainer16;
         private DevComponents.DotNetBar.ItemContainer itemContainer17;
         private DevComponents.DotNetBar.ItemContainer itemContainer18;

@@ -63,6 +63,8 @@ namespace HHTiming.DriveTime
 
             chk_ManualMode.DataBindings.Add(new Binding(nameof(CheckBoxItem.CheckedBindable), this, nameof(ManualMode), true, DataSourceUpdateMode.OnPropertyChanged));
 
+            tb_CountDownDuration.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(CountDownDuration), true, DataSourceUpdateMode.OnPropertyChanged));
+
             Name = "Pit Stopwatch";
 
             ManualMode = false;
@@ -82,6 +84,9 @@ namespace HHTiming.DriveTime
         public double BoxExitTime { get; set; } = 10;
         public double BoxEntryTime { get; set; } = 10;
         public int InLapTime { get; set; } = 180;
+
+        public int CountDownDuration { get; set; } = 15;
+
 
         public string CarNumber
         {
@@ -251,6 +256,10 @@ namespace HHTiming.DriveTime
                     case "ManualMode":
                         ManualMode = bool.Parse(elem.InnerText);
                         break;
+                    case "CountDownDuration":
+                        CountDownDuration = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
+                        break;
+
                 }
             }
         }
@@ -264,6 +273,7 @@ namespace HHTiming.DriveTime
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MaxShortTime", MaxShortTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MinLongTime", MinLongTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "ManualMode", ManualMode.ToString(), parentXMLElement);
+            XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "CountDownDuration", CountDownDuration.ToString(CultureInfo.InvariantCulture), parentXMLElement);
         }
 
         #endregion
@@ -359,7 +369,7 @@ namespace HHTiming.DriveTime
 
                     lbl_Time.Text = SecondsToTimeString(stopTime, LongTimeFormat);
 
-                    if (stopTime < MaxShortTime - BoxExitTime - 15)
+                    if (stopTime < MaxShortTime - BoxExitTime - CountDownDuration)
                     {
                         BackColor = Color.Green;
 
@@ -374,7 +384,7 @@ namespace HHTiming.DriveTime
                         lbl_MidHeading.Text = "Release Window Closes In";
                         lbl_CountdownStatus.Text = SecondsToTimeString(MaxShortTime - BoxExitTime - stopTime, ShortTimeFormat);
                     }
-                    else if (stopTime >= MaxShortTime - BoxExitTime && stopTime < MinLongTime - BoxExitTime - 15)
+                    else if (stopTime >= MaxShortTime - BoxExitTime && stopTime < MinLongTime - BoxExitTime - CountDownDuration)
                     {
                         BackColor = Color.Red;
 
