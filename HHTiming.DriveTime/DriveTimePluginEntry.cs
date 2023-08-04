@@ -9,6 +9,7 @@ using HHTiming.Core.Definitions.UIUpdate.Interfaces;
 using HHTiming.DAL;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using HHDev.Core.NETStandard.Helpers;
 
 namespace HHTiming.DriveTime
 {
@@ -139,6 +140,10 @@ namespace HHTiming.DriveTime
             var createNewCumulativeDrivingTime = new HHRibbonButton("Cumulative Driving Time (Experimental)", Properties.Resources.StintSummary_48, HandleCreateNewCumulativeDrivingTime);
             bar.Buttons.Add(createNewCumulativeDrivingTime);
 
+            var createNewPitStopWindow = new HHRibbonButton("Pit Stop Window", Properties.Resources.StintSummary_48, HandleCreateNewPitStopWindow);
+            bar.Buttons.Add(createNewPitStopWindow);
+
+
 
             var createNewPitStopwatchButton = new HHRibbonButton("Pit Stopwatch", Properties.Resources.PitStopwatch_48, HandleCreateNewPitStopwatch);
             bar.Buttons.Add(createNewPitStopwatchButton);
@@ -162,6 +167,19 @@ namespace HHTiming.DriveTime
             AddNewWorksheet?.Invoke(this, new NewWorksheetEventArgs()
             {
                 NewWorksheet = new StintSummaryControl(carForm.CarID),
+                TargetWorkbook = sender
+            });
+        }
+
+        private void HandleCreateNewPitStopWindow(object sender)
+        {
+            var carForm = new GetCarNumberForm();
+            if (carForm.ShowDialog() != DialogResult.OK)
+                return;
+
+            AddNewWorksheet?.Invoke(this, new NewWorksheetEventArgs()
+            {
+                NewWorksheet = new PitStopWindowControl(carForm.CarID),
                 TargetWorkbook = sender
             });
         }
