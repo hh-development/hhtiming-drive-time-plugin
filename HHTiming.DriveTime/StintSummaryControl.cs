@@ -268,7 +268,7 @@ namespace HHTiming.DriveTime
                         InLapTime = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
                         break;
                     case "MaxStintLength":
-                        MaxStintLength = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
+                        MaxStintLength = double.Parse(elem.InnerText, CultureInfo.InvariantCulture);
                         break;
                 }
             }
