@@ -39,6 +39,8 @@
             this.itemContainer5 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer6 = new DevComponents.DotNetBar.ItemContainer();
             this.itemContainer7 = new DevComponents.DotNetBar.ItemContainer();
+            this.itemContainer71 = new DevComponents.DotNetBar.ItemContainer();
+
             this.labelItem2 = new DevComponents.DotNetBar.LabelItem();
             this.tb_InLapTime = new DevComponents.DotNetBar.TextBoxItem();
             this.labelItemContinuousDrivingTime = new DevComponents.DotNetBar.LabelItem();
@@ -63,6 +65,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_PitWindowContent = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.lbl_PitWindowHeading = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+
+            this.cb_IncludePitStops = new DevComponents.DotNetBar.CheckBoxItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnl_PitWindow.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -184,6 +188,7 @@
             this.itemContainer5.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer6,
             this.itemContainer7,
+            this.itemContainer71,
             this.itemContainer8});
             // 
             // 
@@ -246,8 +251,27 @@
             this.tb_ContinuousDrivingTime.Text = "tb_ContinuousDrivingTime";
             this.tb_ContinuousDrivingTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_ContinuousDrivingTime.WatermarkColor = System.Drawing.SystemColors.GrayText;
+            // 
+            // itemContainer71
+            // 
+            // 
+            // 
+            // 
+            this.itemContainer71.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.itemContainer71.Name = "itemContainer71";
+            this.itemContainer71.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+                this.cb_IncludePitStops});
+            // 
+            // 
+            // 
+            this.itemContainer71.TitleStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
 
-
+            // 
+            // cb_IncludePitStops
+            // 
+            this.cb_IncludePitStops.GlobalItem = false;
+            this.cb_IncludePitStops.Name = "cb_IncludePitStops";
+            this.cb_IncludePitStops.Text = "Include PitStop Times";
             // 
             // itemContainer8
             // 
@@ -600,5 +624,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_PitWindowContent;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_PitWindowHeading;
+        private DevComponents.DotNetBar.ItemContainer itemContainer71;
+        private DevComponents.DotNetBar.CheckBoxItem cb_IncludePitStops;
     }
 }

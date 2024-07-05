@@ -25,27 +25,21 @@ namespace HHTiming.DriveTime
         IWorksheetControlInternal,
         IUIUpdateControl
     {
-
         private Guid _controlID = Guid.NewGuid();
-
         private string _carNumber = null;
         private eCarStatus _carStatus = eCarStatus.InPitStop;
         private Color _carColor = Color.Empty;
-
         private string _driverName = "";
-        private double _driverTotalTime = 0;
-
         private double _sessionTime = 0;
         private double _sessionEndTime = double.MaxValue;
-
         private double _driverStartTime = 0;
-        private double _continuousDrivingTime = 0;
-
         private double _projectedLapTime = 0;
         private double _averageLapTime = 0;
-
-        //private int _stintNumber = 0;
-
+        private double _continuousDriveTime = 0;
+        private int _stintNumber = 0;
+        private double _previousStintTimes = 0;
+        private double _previousPitStopTimes = 0;
+        private double _stintStartTime = 0;
         private bool _boxNow = false;
 
         private const string LongTimeFormat = @"h\:mm\:ss";
@@ -53,48 +47,45 @@ namespace HHTiming.DriveTime
         public ContinuousDrivingTimeControl()
         {
             InitializeComponent();
-
             Dock = DockStyle.Fill;
 
-            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 
             tb_CarNumber.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(CarNumber), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_InLapTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(InLapTime), true, DataSourceUpdateMode.OnPropertyChanged));
             tb_ContinuousDrivingTime.DataBindings.Add(new Binding(nameof(TextBoxItem.Text), this, nameof(MaxContinuousDrivingTime), true, DataSourceUpdateMode.OnPropertyChanged));
-
+            cb_IncludePitStops.Checked = false;
+            cb_IncludePitStops.DataBindings.Add(nameof(CheckBoxItem.CheckedBindable), this, nameof(IncludePitStops), true, DataSourceUpdateMode.OnPropertyChanged);
 
             Name = "Continuous Driving Time";
         }
 
         public ContinuousDrivingTimeControl(string carNumber) : this()
         {
-            _carNumber = carNumber;
-            lbl_CarNumber.Text = carNumber;
+            CarNumber = carNumber;
+        }
+
+        private bool _includePitStops;
+        public bool IncludePitStops
+        {
+            get => _includePitStops;
+            set
+            {
+                if (_includePitStops == value) return;
+                _includePitStops = value;
+                // Notify property change if necessary
+            }
         }
 
         public string CarNumber
         {
-            get
-            {
-                return _carNumber;
-            }
+            get => _carNumber;
             set
             {
                 if (_carNumber == value) return;
-
-
-                _driverTotalTime = 0;
-                _driverStartTime = 0;
-
-                _projectedLapTime = 0;
-                _averageLapTime = 0;
-
-                //_stintNumber = 0;
-
                 _carNumber = value;
                 lbl_CarNumber.Text = _carNumber;
+                ResetStintData();
                 ReinitializationFlag = true;
             }
         }
@@ -102,86 +93,48 @@ namespace HHTiming.DriveTime
         public double MaxContinuousDrivingTime { get; set; } = 195;
         public int InLapTime { get; set; } = 180;
 
-
         public string DriverName
         {
-            get
-            {
-                return _driverName;
-            }
+            get => _driverName;
             set
             {
                 if (value != _driverName && value != Globals.IGNORE_FIELD_STRING && value != "")
                 {
                     _driverName = value;
                     lbl_DriverName.Text = value;
-
                 }
             }
         }
 
+        private void ResetStintData()
+        {
+            _previousStintTimes = 0;
+            _previousPitStopTimes = 0;
+            _stintStartTime = 0;
+            _driverStartTime = 0;
+            _projectedLapTime = 0;
+            _averageLapTime = 0;
+            _continuousDriveTime = 0;
+            _stintNumber = 0;
+        }
+
         #region IWorksheetControlInternal
 
-        public bool CanBeSavedInLayout
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool CanBeSavedInLayout => true;
 
-        public Guid ControlID
-        {
-            get
-            {
-                return _controlID;
-            }
-        }
+        public Guid ControlID => _controlID;
 
-        public bool IsAddedToProject
-        {
-            get
-            {
-                return false;
-            }
+        public bool IsAddedToProject { get; set; } = false;
 
-            set
-            {
+        public bool RenameAllowed => true;
 
-            }
-        }
+        public Control WorksheetControl => this;
 
-        public bool RenameAllowed
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public Control WorksheetControl
-        {
-            get
-            {
-                return this;
-            }
-        }
-
-        public Icon WorksheetIcon
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public Icon WorksheetIcon => null;
 
         public string WorksheetName
         {
-            get
-            {
-                return Name;
-            }
-
+            get => Name;
             set
             {
                 if (value != Name)
@@ -198,25 +151,13 @@ namespace HHTiming.DriveTime
 #pragma warning restore 0067
         public event WorksheetNameChangedEventHandler WorksheetNameChanged;
 
-        public bool CloseWorksheet()
-        {
-            return true;
-        }
+        public bool CloseWorksheet() => true;
 
-        public HHRibbonBar[] GetRibbonBars()
-        {
-            return null;
-        }
+        public HHRibbonBar[] GetRibbonBars() => null;
 
-        public RibbonBar[] GetRibbonBar()
-        {
-            return new RibbonBar[] { ribbonBar1 };
-        }
+        public RibbonBar[] GetRibbonBar() => new RibbonBar[] { ribbonBar1 };
 
-        public IProjectObject GetWorksheetProjectControl()
-        {
-            return null;
-        }
+        public IProjectObject GetWorksheetProjectControl() => null;
 
         public void LoadFromXML(XmlElement parentXMLElement)
         {
@@ -233,6 +174,9 @@ namespace HHTiming.DriveTime
                     case "MaxContinuousDrivingTime":
                         MaxContinuousDrivingTime = double.Parse(elem.InnerText, CultureInfo.InvariantCulture);
                         break;
+                    case "IncludePitStops":
+                        IncludePitStops = bool.Parse(elem.InnerText);
+                        break;
                     case "InLapTime":
                         InLapTime = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
                         break;
@@ -246,6 +190,7 @@ namespace HHTiming.DriveTime
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "CarColor", _carColor.ToArgb().ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MaxContinuousDrivingTime", MaxContinuousDrivingTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "InLapTime", InLapTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
+            XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "IncludePitStops", IncludePitStops.ToString(), parentXMLElement);
         }
 
         #endregion
@@ -254,49 +199,20 @@ namespace HHTiming.DriveTime
 
         public bool ReinitializationFlag { get; set; }
 
-        public bool RequiresPaint
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool RequiresPaint => true;
 
-        public bool RunsInUIThread
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool RunsInUIThread => true;
 
-        public bool UseBulkInitialization
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool UseBulkInitialization => true;
 
-        public List<IUIUpdateMessage> BroadcastUIUpdateMessages()
-        {
-            return null;
-        }
+        public List<IUIUpdateMessage> BroadcastUIUpdateMessages() => null;
 
-        public List<IUIDbMessage> GetDatabaseMessages()
-        {
-            return null;
-        }
+        public List<IUIDbMessage> GetDatabaseMessages() => null;
 
-        public DatabaseRequest[] GetDatabaseRequests()
-        {
-            return new DatabaseRequest[] { new DatabaseRequest(eDatabaseRequestType.AllStintsAllCars, new string[] { }, this.ControlID) };
-        }
+        public DatabaseRequest[] GetDatabaseRequests() =>
+            new DatabaseRequest[] { new DatabaseRequest(eDatabaseRequestType.AllStintsAllCars, new string[] { }, ControlID) };
 
-        public List<IUIUpdateMessage> GetInitializationMessages(Guid aTargetControlID)
-        {
-            return null;
-        }
+        public List<IUIUpdateMessage> GetInitializationMessages(Guid aTargetControlID) => null;
 
         public void PaintControl(SessionStatusUIUpdateMessage aSessionUIUpdateMessage, bool aFlashFlag)
         {
@@ -306,54 +222,40 @@ namespace HHTiming.DriveTime
             {
                 if (_carStatus == eCarStatus.OnTrackRunning || _carStatus == eCarStatus.PitOut)
                 {
-                    double continuousDrivingTime = _sessionTime - _driverStartTime;
+                    double stintTime = _sessionTime - _stintStartTime;
+                    double continuousDrivingTime = _previousStintTimes + stintTime;
+
+                    if (_includePitStops)
+                    {
+                        continuousDrivingTime += _previousPitStopTimes;
+                    }
+
                     double remainingTime = MaxContinuousDrivingTime * 60 - continuousDrivingTime;
-                    string remainingTimeString = SecondsToTimeString(remainingTime, LongTimeFormat);
 
                     lbl_ContinuousDrivingTime.Text = SecondsToTimeString(continuousDrivingTime, LongTimeFormat);
-                    lbl_TimeAtEnd.Text = SecondsToTimeString(_driverStartTime + MaxContinuousDrivingTime * 60, LongTimeFormat);
+                    lbl_TimeAtEnd.Text = SecondsToTimeString(_driverStartTime + MaxContinuousDrivingTime * 60 + (_includePitStops ? 0 : _previousPitStopTimes), LongTimeFormat);
 
-                    if (remainingTime > 0)
+                    SetBackgroundColor(remainingTime > 0 ? _carColor : (aFlashFlag ? Color.Red : Color.Black));
+
+                    lbl_ContinuousTimeRemaining.Text = SecondsToTimeString(Math.Max(MaxContinuousDrivingTime * 60 - continuousDrivingTime, 0), LongTimeFormat);
+
+                    if (_continuousDriveTime != double.MaxValue)
                     {
-                        SetBackgroundColor(_carColor);
-                        //lbl_ContinuousDrivingTimeRemaining.Text = remainingTimeString;
-                    }
-                    else
-                    {
-                        if (aFlashFlag)
-                        {
-                            SetBackgroundColor(Color.Red);
-                        }
-                        else
-                        {
-                            SetBackgroundColor(Color.Black);
-                        }
+                        double continuousDriveTimeToUse = _continuousDriveTime + (_includePitStops ? _previousPitStopTimes : 0);
+                        double projectedLapTime = _projectedLapTime == 0 ? _averageLapTime : _projectedLapTime;
+                        double thisLap = continuousDriveTimeToUse + InLapTime;
 
-                        //lbl_ContinuousDrivingTimeRemaining.Text = "+" + remainingTimeString;
-                    }
-
-                    if ( _continuousDrivingTime != double.MaxValue)
-                    {
-                        lbl_ContinuousTimeRemaining.Text = SecondsToTimeString(Math.Max(MaxContinuousDrivingTime * 60 - continuousDrivingTime, 0), LongTimeFormat);
-
-
-                        double projectedLapTime = _projectedLapTime;
-                        if (projectedLapTime == 0) projectedLapTime = _averageLapTime;
-
-                        double thisLap = _continuousDrivingTime + InLapTime;
                         lbl_BoxThisLapTime.Text = SecondsToTimeString(thisLap, LongTimeFormat);
 
-                        if (_projectedLapTime != 0)
+                        if (projectedLapTime != 0)
                         {
                             double nextLap = thisLap + projectedLapTime;
-
                             lbl_BoxNextLapTime.Text = SecondsToTimeString(nextLap, LongTimeFormat);
 
-                            double lapsRemaining = (MaxContinuousDrivingTime * 60 - _continuousDrivingTime - projectedLapTime) / _averageLapTime;
+                            double lapsRemaining = (MaxContinuousDrivingTime * 60 - continuousDriveTimeToUse - projectedLapTime) / _averageLapTime;
                             lbl_LapsRemaining.Text = lapsRemaining.ToString("F1");
 
-                            if (lapsRemaining != 0 && lapsRemaining < 1) _boxNow = true;
-                            else _boxNow = false;
+                            _boxNow = lapsRemaining < 1;
                         }
                         else
                         {
@@ -364,110 +266,76 @@ namespace HHTiming.DriveTime
                     else
                     {
                         lbl_ContinuousTimeRemaining.Text = "-";
-
                         lbl_BoxThisLapTime.Text = "-";
                         lbl_BoxNextLapTime.Text = "-";
                         lbl_LapsRemaining.Text = "-";
                     }
 
-                    if (_boxNow)
-                    {
-                        tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 2);
-                        lbl_PitWindowContent.Visible = false;
-
-                        if (_boxNow)
-                        {
-                            if (aFlashFlag)
-                            {
-                                pnl_PitWindow.BackColor = Color.Red;
-                                pnl_PitWindow.ForeColor = Color.Black;
-                            }
-                            else
-                            {
-                                pnl_PitWindow.BackColor = Color.Black;
-                                pnl_PitWindow.ForeColor = Color.Red;
-                            }
-
-                            lbl_PitWindowHeading.Text = "BOX THIS LAP";
-                        }
-                    }
-                    else
-                    {
-                        lbl_PitWindowHeading.Text = "";
-                        pnl_PitWindow.BackColor = default(Color);
-                        pnl_PitWindow.ForeColor = default(Color);
-
-                        tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
-                        lbl_PitWindowContent.Visible = true;
-
-
-                    }
+                    UpdatePitWindowDisplay(aFlashFlag);
                 }
                 else
                 {
-                    SetBackgroundColor(Color.LightGray);
-
-                    pnl_PitWindow.BackColor = default(Color);
-                    pnl_PitWindow.ForeColor = default(Color);
-
-                    tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
-                    lbl_PitWindowContent.Visible = true;
-
-                    lbl_ContinuousDrivingTime.Text = "-";
-                    //lbl_ContinuousDrivingTimeRemaining.Text = "-";
-                    lbl_TimeAtEnd.Text = "-";
-
-                    lbl_BoxNextLapTime.Text = "-";
-                    lbl_BoxThisLapTime.Text = "-";
-
-                    lbl_LapsRemaining.Text = "-";
-
-                    lbl_PitWindowHeading.Text = "";
-                    lbl_PitWindowContent.Text = "";
+                    ResetUIForIdleState();
                 }
             }
         }
 
+        private void UpdatePitWindowDisplay(bool aFlashFlag)
+        {
+            if (_boxNow)
+            {
+                tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 2);
+                lbl_PitWindowContent.Visible = false;
+                pnl_PitWindow.BackColor = aFlashFlag ? Color.Red : Color.Black;
+                pnl_PitWindow.ForeColor = aFlashFlag ? Color.Black : Color.Red;
+                lbl_PitWindowHeading.Text = "BOX THIS LAP";
+            }
+            else
+            {
+                lbl_PitWindowHeading.Text = "";
+                pnl_PitWindow.BackColor = default;
+                pnl_PitWindow.ForeColor = default;
+                tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
+                lbl_PitWindowContent.Visible = true;
+            }
+        }
+
+        private void ResetUIForIdleState()
+        {
+            SetBackgroundColor(Color.LightGray);
+            pnl_PitWindow.BackColor = default;
+            pnl_PitWindow.ForeColor = default;
+            tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
+            lbl_PitWindowContent.Visible = true;
+            lbl_ContinuousDrivingTime.Text = "-";
+            lbl_TimeAtEnd.Text = "-";
+            lbl_BoxNextLapTime.Text = "-";
+            lbl_BoxThisLapTime.Text = "-";
+            lbl_LapsRemaining.Text = "-";
+            lbl_PitWindowHeading.Text = "";
+            lbl_PitWindowContent.Text = "";
+        }
+
         public void ReceiveUIUpdateMessage(IUIUpdateMessage anUpdateMessage)
         {
-            if (anUpdateMessage is BulkRefreshDataUIUpdateMessage b)
+            if (anUpdateMessage is BulkRefreshDataUIUpdateMessage bulkMessage)
             {
-                // bulk messages is the list of messages the control receives when it is loaded
-                //i.e. if the user opens the control in the middle of the race, it will receive the messages from 
-                //the beginning to the current time
-
-                //uIUpdateMessages.Clear();
-
-                foreach (IUIUpdateMessage item in b.ListOfUIUpdateMessages)
+                foreach (IUIUpdateMessage item in bulkMessage.ListOfUIUpdateMessages)
                 {
-                    //uIUpdateMessages.Add(item);
                     HandleUIUpdateMessage(item, false);
                 }
             }
-            else 
+            else
+            {
                 HandleUIUpdateMessage(anUpdateMessage, true);
-
+            }
         }
 
         private void HandleUIUpdateMessage(IUIUpdateMessage anUpdateMessage, bool anAllowRefresh)
         {
             if (anUpdateMessage is ResetUIUpdateMessage)
             {
-                _carStatus = eCarStatus.OnTrackRunning;
-
-                lbl_ContinuousDrivingTime.Text = "0:00:00";
-                lbl_DriverName.Text = "NO DRIVER NAME";
-                //lbl_ContinuousDrivingTimeRemaining.Text = "0:00:00";
-
-                _averageLapTime = 0;
-                _driverName = "";
-                _driverTotalTime = 0;
-                _projectedLapTime = 0;
-                _sessionTime = 0;
-                //_stintNumber = 0;
-                _driverStartTime = 0;
-                _continuousDrivingTime = 0;
-
+                ResetUI();
             }
             else if (anUpdateMessage is UserDefinedSessionLengthUIUpdateMessage sessionMessage)
             {
@@ -476,44 +344,54 @@ namespace HHTiming.DriveTime
 
             if (((BaseUIUpdateMessage)anUpdateMessage).ItemID != CarNumber) return;
 
-            if (anUpdateMessage is CarUIUpdateMessage)
+            switch (anUpdateMessage)
             {
-                HandleCarUIUpdateMessage((CarUIUpdateMessage)anUpdateMessage);
-            }
-            else if (anUpdateMessage is CarStatusUIUpdateMessage)
-            {
-                HandleCarStatusUIUpdateMessage((CarStatusUIUpdateMessage)anUpdateMessage);
-            }
-            else if (anUpdateMessage is CurrentDriverUIUpdateMessage)
-            {
-                HandleCurrentDriverUIUpdateMessage((CurrentDriverUIUpdateMessage)anUpdateMessage);
-            }
-            //else if (anUpdateMessage is DriverOverrideUIUpdateMessage)
-            //{
-            //    _stintNumber = 0;
-            //}
-            else if (anUpdateMessage is PitstopUIUpdateMessage)
-            {
-                HandlePitStopUIUpdateMessage((PitstopUIUpdateMessage)anUpdateMessage);
-            }
-            //else if (anUpdateMessage is StintUIUpdateMessage)
-            //{
-            //    HandleStintUIUpdateMessage((StintUIUpdateMessage)anUpdateMessage);
-            //}
-            else if (anUpdateMessage is LapUIUpdateMessage)
-            {
-                HandleLapUIUpdateMessage((LapUIUpdateMessage)anUpdateMessage);
-            }
-            else if (anUpdateMessage is SectorUIUpdateMessage)
-            {
-                HandleSectorUIUpdateMessage((SectorUIUpdateMessage)anUpdateMessage);
-            }
-            else if (anUpdateMessage is EstimatedTimeRemainingUIUpdateMessage)
-            {
-                HandleEstimatedTimeRemainingUIUpdateMessage((EstimatedTimeRemainingUIUpdateMessage)anUpdateMessage);
+                case CarUIUpdateMessage carMessage:
+                    HandleCarUIUpdateMessage(carMessage);
+                    break;
+                case CarStatusUIUpdateMessage statusMessage:
+                    HandleCarStatusUIUpdateMessage(statusMessage);
+                    break;
+                case CurrentDriverUIUpdateMessage driverMessage:
+                    HandleCurrentDriverUIUpdateMessage(driverMessage);
+                    break;
+                case DriverOverrideUIUpdateMessage _:
+                    _stintNumber = 0;
+                    break;
+                case PitstopUIUpdateMessage pitstopMessage:
+                    HandlePitStopUIUpdateMessage(pitstopMessage);
+                    break;
+                case StintUIUpdateMessage stintMessage:
+                    HandleStintUIUpdateMessage(stintMessage);
+                    break;
+                case LapUIUpdateMessage lapMessage:
+                    HandleLapUIUpdateMessage(lapMessage);
+                    break;
+                case SectorUIUpdateMessage sectorMessage:
+                    HandleSectorUIUpdateMessage(sectorMessage);
+                    break;
+                case EstimatedTimeRemainingUIUpdateMessage estimatedMessage:
+                    HandleEstimatedTimeRemainingUIUpdateMessage(estimatedMessage);
+                    break;
             }
         }
 
+        private void ResetUI()
+        {
+            _carStatus = eCarStatus.OnTrackRunning;
+            lbl_ContinuousDrivingTime.Text = "0:00:00";
+            lbl_DriverName.Text = "NO DRIVER NAME";
+            _averageLapTime = 0;
+            _driverName = "";
+            _previousStintTimes = 0;
+            _previousPitStopTimes = 0;
+            _stintStartTime = 0;
+            _projectedLapTime = 0;
+            _sessionTime = 0;
+            _stintNumber = 0;
+            _driverStartTime = 0;
+            _continuousDriveTime = 0;
+        }
 
         #endregion
 
@@ -531,104 +409,85 @@ namespace HHTiming.DriveTime
         public void HandleCurrentDriverUIUpdateMessage(CurrentDriverUIUpdateMessage aMessage)
         {
             DriverName = aMessage.DriverName;
-            _driverTotalTime = 0;
         }
 
         public void HandleEstimatedTimeRemainingUIUpdateMessage(EstimatedTimeRemainingUIUpdateMessage aMessage)
         {
-            if (aMessage.AlternateEstimatedRace != null && aMessage.AlternateEstimatedRace.EstimatedStints.Count > 0 &&
-                aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedStints.Count > 0)
-            {
-                EstimatedStint firstForwardStint = aMessage.CurrentEstimatedRace.EstimatedStints.First();
-                EstimatedStint lastForwardStint = aMessage.CurrentEstimatedRace.EstimatedStints.Last();
-                EstimatedStint lastReverseStint = aMessage.AlternateEstimatedRace.EstimatedStints.Last();
-
-                double forwardOffset = lastForwardStint.EndTime - _sessionEndTime;
-                double reverseOffset = lastReverseStint.EndTime - _sessionEndTime;
-
-                // Pit window is difference between final stint start times adjusted for race end
-                double pitWindow = lastForwardStint.StartTime - forwardOffset - (lastReverseStint.StartTime - reverseOffset);
-
-            }
-
             if (aMessage.CurrentEstimatedRace != null && aMessage.CurrentEstimatedRace.EstimatedLapTime != double.MaxValue)
             {
                 _averageLapTime = aMessage.CurrentEstimatedRace.EstimatedLapTime;
             }
         }
 
-        public void HandleLapUIUpdateMessage(LapUIUpdateMessage message)
-        {
-            _continuousDrivingTime = message.ElapsedTime - _driverStartTime;
-
-            _driverTotalTime = message.DrivingTimeforCurrentDriverAtEndOfLap;
-        }
-
         public void HandlePitStopUIUpdateMessage(PitstopUIUpdateMessage aMessage)
         {
-            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn) {
+            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn)
+            {
                 itemContainer5.Refresh();
-
             }
 
             if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.NewStop)
             {
                 itemContainer5.Refresh();
 
-
-
-
                 if (aMessage.PitOutSessionTime > _driverStartTime && aMessage.InDriverName != aMessage.OutDriverName)
                 {
-
-                    _continuousDrivingTime = 0;
+                    _continuousDriveTime = 0;
+                    _stintStartTime = aMessage.PitOutSessionTime;
                     _driverStartTime = aMessage.PitOutSessionTime;
-
                     DriverName = aMessage.OutDriverName;
+                    _previousPitStopTimes = 0;
+                }
+                else if (aMessage.PitOutSessionTime > _driverStartTime)
+                {
+                    _stintStartTime = aMessage.PitOutSessionTime;
+                    _previousPitStopTimes += aMessage.StopTime;
                 }
 
                 _boxNow = false;
             }
         }
 
+        public void HandleLapUIUpdateMessage(LapUIUpdateMessage message)
+        {
+            double stintTime = message.ElapsedTime - _stintStartTime;
+            _continuousDriveTime = _previousStintTimes + stintTime;
+        }
+
         public void HandleSectorUIUpdateMessage(SectorUIUpdateMessage aMessage)
         {
             DriverName = aMessage.DriverName;
-
-            if (aMessage.ProjectedLapTime != double.MaxValue && aMessage.ProjectedLapTime != 0)
-                _projectedLapTime = aMessage.ProjectedLapTime;
-            else
-                _projectedLapTime = 0;
+            _projectedLapTime = aMessage.ProjectedLapTime != double.MaxValue && aMessage.ProjectedLapTime != 0 ? aMessage.ProjectedLapTime : 0;
         }
 
-        //public void HandleStintUIUpdateMessage(StintUIUpdateMessage aMessage)
-        //{
-        //    if (aMessage.StintMessageType == StintUIUpdateMessage.StintMessageTypeEnum.CurrentStint)
-        //    {
-        //        DriverName = aMessage.DriverID;
+        public void HandleStintUIUpdateMessage(StintUIUpdateMessage aMessage)
+        {
+            if (aMessage.StintMessageType == StintUIUpdateMessage.StintMessageTypeEnum.CurrentStint)
+            {
+                DriverName = aMessage.DriverID;
 
-        //        if (aMessage.DrivingTime != double.MaxValue)
-        //        {
-        //            _driverStartTime = aMessage.StartTime;
-        //            _continuousDrivingTime = aMessage.DrivingTime;
-        //        }
-        //    }
-        //    else if (aMessage.StintMessageType == StintUIUpdateMessage.StintMessageTypeEnum.EndOfStint)
-        //    {
-        //        if (aMessage.DrivingTime != double.MaxValue && _stintNumber == aMessage.StintNumber)
-        //        {
-        //            DriverName = aMessage.DriverID;
-
-        //            _stintNumber++;
-        //        }
-        //    }
-        //}
+                if (aMessage.DrivingTime != double.MaxValue)
+                {
+                    _driverStartTime = aMessage.StartTime;
+                }
+            }
+            else if (aMessage.StintMessageType == StintUIUpdateMessage.StintMessageTypeEnum.EndOfStint)
+            {
+                if (aMessage.DrivingTime != double.MaxValue && _stintNumber == aMessage.StintNumber)
+                {
+                    DriverName = aMessage.DriverID;
+                    _previousStintTimes += aMessage.DrivingTime;
+                    _stintNumber++;
+                }
+            }
+        }
 
         public void SetBackgroundColor(Color carColor)
         {
             tableLayoutPanel1.BackColor = carColor;
             tableLayoutPanel1.ForeColor = ColorFunctionsWinForms.GetTextColor(carColor);
         }
+
         public string SecondsToTimeString(double aTime, string format)
         {
             if (double.IsNaN(aTime) || double.IsInfinity(aTime) || aTime == double.MaxValue || aTime == double.MinValue)
