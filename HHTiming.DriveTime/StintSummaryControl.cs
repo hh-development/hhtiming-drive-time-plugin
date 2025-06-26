@@ -1,22 +1,22 @@
-﻿using System;
+﻿using DevComponents.DotNetBar;
+using HHDev.Core.NETStandard.Helpers;
+using HHDev.Core.WinForms.Helpers;
+using HHDev.ProjectFramework.Definitions;
+using HHTiming.Core.Definitions.Enums;
+using HHTiming.Core.Definitions.UIUpdate.Database;
+using HHTiming.Core.Definitions.UIUpdate.Implementations;
+using HHTiming.Core.Definitions.UIUpdate.Implementations.Messages;
+using HHTiming.Core.Definitions.UIUpdate.Interfaces;
+using HHTiming.Desktop.Definitions.PlugInFramework;
+using HHTiming.Desktop.Definitions.Worksheet;
+using HHTiming.WinFormsControls.Workbook;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using DevComponents.DotNetBar;
-using HHDev.Core.NETStandard.Helpers;
-using HHDev.Core.WinForms.Helpers;
-using HHDev.ProjectFramework.Definitions;
-using HHTiming.Core.Definitions.Enums;
-using HHTiming.Core.Definitions.UIUpdate.Interfaces;
-using HHTiming.Core.Definitions.UIUpdate.Database;
-using HHTiming.Core.Definitions.UIUpdate.Implementations;
-using HHTiming.Core.Definitions.UIUpdate.Implementations.Messages;
-using HHTiming.Desktop.Definitions.PlugInFramework;
-using HHTiming.Desktop.Definitions.Worksheet;
-using HHTiming.WinFormsControls.Workbook;
 
 namespace HHTiming.DriveTime
 {
@@ -70,6 +70,8 @@ namespace HHTiming.DriveTime
 
             cb_MergeStints.Checked = false;
             cb_MergeStints.DataBindings.Add(nameof(CheckBoxItem.CheckedBindable), this, nameof(MergeStints), true, DataSourceUpdateMode.OnPropertyChanged);
+            cb_EDS.Checked = false;
+            cb_EDS.DataBindings.Add(nameof(CheckBoxItem.CheckedBindable), this, nameof(EDS), true, DataSourceUpdateMode.OnPropertyChanged);
 
             Name = "Stint Summary";
         }
@@ -108,7 +110,12 @@ namespace HHTiming.DriveTime
             }
         }
 
-        public double MaxStintLength { get; set; } = 65;
+        public double MaxStintLength { get; set; } = 60;
+
+        public double RealMaxStintLength
+        {
+            get { return MaxStintLength + (EDS ? 5 : 0); }
+        }
         public double MaxContinuousDrivingTime { get; set; } = 195;
         public double MaxTotalDrivingTime { get; set; } = 840;
         public int InLapTime { get; set; } = 180;
@@ -126,7 +133,36 @@ namespace HHTiming.DriveTime
                 if (_mergeStints == value) return;
 
                 _mergeStints = value;
-                lbl_StintMerged.Visible = _mergeStints;
+                lbl_StintMerged.Visible = _mergeStints || _eds;
+                if (_mergeStints && _eds)
+                    lbl_StintMerged.Text = "Stints Merged + EDS";
+                else if (_mergeStints)
+                    lbl_StintMerged.Text = "Stints Merged";
+                else if (_eds)
+                    lbl_StintMerged.Text = "EDS";
+
+            }
+        }
+
+        private bool _eds;
+        public bool EDS
+        {
+            get
+            {
+                return _eds;
+            }
+            set
+            {
+                if (_eds == value) return;
+
+                _eds = value;
+                lbl_StintMerged.Visible = _mergeStints || _eds;
+                if (_mergeStints && _eds)
+                    lbl_StintMerged.Text = "Stints Merged + EDS";
+                else if (_mergeStints)
+                    lbl_StintMerged.Text = "Stints Merged";
+                else if (_eds)
+                    lbl_StintMerged.Text = "EDS";
 
             }
         }
@@ -343,11 +379,11 @@ namespace HHTiming.DriveTime
                 if (_carStatus == eCarStatus.OnTrackRunning || _carStatus == eCarStatus.PitOut)
                 {
                     double stintTime = MergeStints ? _sessionTime - _previousStintStartTime : _sessionTime - _stintStartTime;
-                    double remainingTime = MaxStintLength * 60 - stintTime;
+                    double remainingTime = RealMaxStintLength * 60 - stintTime;
                     string remainingTimeString = SecondsToTimeString(remainingTime, LongTimeFormat);
 
                     lbl_StintTime.Text = SecondsToTimeString(stintTime, LongTimeFormat);
-                    lbl_TimeAtEnd.Text = SecondsToTimeString((MergeStints ? _previousStintStartTime : _stintStartTime) + MaxStintLength * 60, LongTimeFormat);
+                    lbl_TimeAtEnd.Text = SecondsToTimeString((MergeStints ? _previousStintStartTime : _stintStartTime) + RealMaxStintLength * 60, LongTimeFormat);
 
                     if (remainingTime > 0)
                     {
@@ -387,7 +423,7 @@ namespace HHTiming.DriveTime
 
                             lbl_BoxNextLapTime.Text = SecondsToTimeString(nextLap, LongTimeFormat);
 
-                            double lapsRemaining = (MaxStintLength * 60 - _stintTime - projectedLapTime) / _averageLapTime;
+                            double lapsRemaining = (RealMaxStintLength * 60 - _stintTime - projectedLapTime) / _averageLapTime;
                             lbl_LapsRemaining.Text = lapsRemaining.ToString("F1");
 
                             if (lapsRemaining != 0 && lapsRemaining < 1) _boxNow = true;
@@ -499,6 +535,8 @@ namespace HHTiming.DriveTime
 
                 cb_MergeStints.Visible = true;
                 cb_MergeStints.Checked = false;
+                cb_EDS.Visible = true;
+                cb_EDS.Checked = false;
                 lbl_StintMerged.Visible = false;
             }
             else if (anUpdateMessage is TrackOptionsUIUpdateMessage)
@@ -571,7 +609,7 @@ namespace HHTiming.DriveTime
             _driverTotalTime = 0;
         }
 
-        
+
 
         public void HandleEstimatedTimeRemainingUIUpdateMessage(EstimatedTimeRemainingUIUpdateMessage aMessage)
         {
@@ -606,9 +644,12 @@ namespace HHTiming.DriveTime
 
         public void HandlePitStopUIUpdateMessage(PitstopUIUpdateMessage aMessage)
         {
-            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn) {
+            if (aMessage.MessageType == PitstopUIUpdateMessage.PitStopMessageType.PitIn)
+            {
                 cb_MergeStints.SetChecked(false, eEventSource.Mouse);
+                cb_EDS.SetChecked(false, eEventSource.Mouse);
                 cb_MergeStints.Visible = false;
+                cb_EDS.Visible = false;
                 lbl_StintMerged.Visible = false;
                 itemContainer5.Refresh();
 
@@ -618,7 +659,9 @@ namespace HHTiming.DriveTime
             {
                 lbl_StintMerged.Visible = false;
                 cb_MergeStints.Visible = true;
+                cb_EDS.Visible = true;
                 cb_MergeStints.SetChecked(false, eEventSource.Mouse);
+                cb_EDS.SetChecked(false, eEventSource.Mouse);
                 itemContainer5.Refresh();
 
 

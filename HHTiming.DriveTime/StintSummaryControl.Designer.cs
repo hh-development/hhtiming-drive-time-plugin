@@ -45,6 +45,7 @@
             this.labelItemStintTime = new DevComponents.DotNetBar.LabelItem();
             this.tb_StintTime = new DevComponents.DotNetBar.TextBoxItem();
             this.cb_MergeStints = new DevComponents.DotNetBar.CheckBoxItem();
+            this.cb_EDS = new DevComponents.DotNetBar.CheckBoxItem();
             this.itemContainer8 = new DevComponents.DotNetBar.ItemContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_BoxNextLapTime = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
@@ -222,7 +223,7 @@
             this.labelItem2,
             this.tb_InLapTime,
             this.labelItemStintTime,
-            this.tb_StintTime});            
+            this.tb_StintTime});
             // 
             // 
             // 
@@ -265,11 +266,20 @@
             this.itemContainer71.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.itemContainer71.Name = "itemContainer71";
             this.itemContainer71.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
-            this.cb_MergeStints});
-            // 
+    this.cb_MergeStints,
+    new DevComponents.DotNetBar.LabelItem() { Width = 100 },
+    this.cb_EDS
+});            // 
             // 
             // 
             this.itemContainer71.TitleStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+
+            // 
+            // cb_EDS
+            // 
+            this.cb_EDS.GlobalItem = false;
+            this.cb_EDS.Name = "cb_EDS";
+            this.cb_EDS.Text = "EDS";
 
             // 
             // cb_MergeStints
@@ -689,6 +699,7 @@
         private DevComponents.DotNetBar.LabelItem labelItemStintTime;
         private DevComponents.DotNetBar.TextBoxItem tb_StintTime;
         private DevComponents.DotNetBar.CheckBoxItem cb_MergeStints;
+        private DevComponents.DotNetBar.CheckBoxItem cb_EDS;
         private DevComponents.DotNetBar.ItemContainer itemContainer8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_TotalTimeRemaining;
