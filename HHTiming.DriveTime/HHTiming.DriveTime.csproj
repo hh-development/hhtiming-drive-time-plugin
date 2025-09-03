@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Configurations>Debug;Release;DebugFull</Configurations>
+		<NoWarn>WFO1000</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,39 +14,39 @@
 
 	<ItemGroup>
 		<Reference Include="DevComponents.DotNetBar">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\DevComponents.DotNetBar.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\DevComponents.DotNetBar.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHDev.Core.NETStandard">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.Core.NETStandard.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHDev.Core.NETStandard.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHDev.Core.WinForms">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.Core.WinForms.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHDev.Core.WinForms.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHDev.Core.NETFramework">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.Core.NETFramework.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHDev.Core.NETFramework.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHDev.ProjectFramework.Definitions">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHDev.ProjectFramework.Definitions.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHDev.ProjectFramework.Definitions.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHTiming.Core.Definitions">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.Core.Definitions.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHTiming.Core.Definitions.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHTiming.DAL">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.DAL.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHTiming.DAL.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHTiming.WinFormsControls">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.WinFormsControls.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHTiming.WinFormsControls.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="HHTiming.Desktop.Definitions">
-			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\net7.0-windows\win-x64\HHTiming.Desktop.Definitions.dll</HintPath>
+			<HintPath>..\..\desktop\HHTiming.Desktop\bin\$(Configuration)\$(TargetFramework)\win-x64\HHTiming.Desktop.Definitions.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
