@@ -57,6 +57,11 @@
 	  </Compile>
 	  <Compile Update="ContinuousDrivingTimeControl.cs" />
 	</ItemGroup>
+	<ItemGroup>
+	<None Update="PluginInfo.json">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	</ItemGroup>
 
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
