@@ -134,6 +134,9 @@ namespace HHTiming.DriveTime
             var createNewStintSummaryButton = new HHRibbonButton("Stint Summary", Properties.Resources.StintSummary_48, HandleCreateNewStintSummary);
             bar.Buttons.Add(createNewStintSummaryButton);
 
+            var createNewStintSummaryBathurstButton = new HHRibbonButton("Stint Summary Bathurst", Properties.Resources.StintSummary_48, HandleCreateNewStintSummaryBathurst);
+            bar.Buttons.Add(createNewStintSummaryBathurstButton);
+
             var createNewContinuousDrivingTime = new HHRibbonButton("Continuous Driving Time (Experimental)", Properties.Resources.StintSummary_48, HandleCreateNewContinuousDrivingTime);
             bar.Buttons.Add(createNewContinuousDrivingTime);
 
@@ -167,6 +170,19 @@ namespace HHTiming.DriveTime
             AddNewWorksheet?.Invoke(this, new NewWorksheetEventArgs()
             {
                 NewWorksheet = new StintSummaryControl(carForm.CarID),
+                TargetWorkbook = sender
+            });
+        }
+
+        private void HandleCreateNewStintSummaryBathurst(object sender)
+        {
+            var carForm = new GetCarNumberForm();
+            if (carForm.ShowDialog() != DialogResult.OK)
+                return;
+
+            AddNewWorksheet?.Invoke(this, new NewWorksheetEventArgs()
+            {
+                NewWorksheet = new StintSummaryBathurstControl(carForm.CarID),
                 TargetWorkbook = sender
             });
         }
