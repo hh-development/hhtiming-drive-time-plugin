@@ -361,15 +361,21 @@ namespace HHTiming.DriveTime
                         double projectedLapTime = _projectedLapTime;
                         if (projectedLapTime == 0) projectedLapTime = _averageLapTime;
 
+                        double drivingTimeAtLap = Math.Max(_stintTimeUpdated - _driverStartTime, 0);
+                        double currentTotalDrivingTime = _driverTotalTime;
                         double stintTimeToUse = _stintTime + _previousPitStopTimes;
                         double thisLap = _stintTime + InLapTime;
                         lbl_BoxThisLapTime.Text = SecondsToTimeString(thisLap, LongTimeFormat);
+                        lbl_ContinuousTimeBoxThisLap.Text = SecondsToTimeString(drivingTimeAtLap + InLapTime, LongTimeFormat);
+                        lbl_TotalTimeBoxThisLap.Text = SecondsToTimeString(currentTotalDrivingTime + InLapTime, LongTimeFormat);
 
                         if (projectedLapTime != 0)
                         {
                             double nextLap = thisLap + projectedLapTime;
 
                             lbl_BoxNextLapTime.Text = SecondsToTimeString(nextLap, LongTimeFormat);
+                            lbl_ContinuousTimeBoxNextLap.Text = SecondsToTimeString(drivingTimeAtLap + InLapTime + projectedLapTime, LongTimeFormat);
+                            lbl_TotalTimeBoxNextLap.Text = SecondsToTimeString(currentTotalDrivingTime + InLapTime + projectedLapTime, LongTimeFormat);
 
                             _boxNow = (nextLap - stintTime) > remainingContinuous ||
                                       (nextLap - stintTime) > remainingTotal;
@@ -377,6 +383,8 @@ namespace HHTiming.DriveTime
                         else
                         {
                             lbl_BoxNextLapTime.Text = "-";
+                            lbl_ContinuousTimeBoxNextLap.Text = "-";
+                            lbl_TotalTimeBoxNextLap.Text = "-";
                         }
                     }
                     else
@@ -386,6 +394,10 @@ namespace HHTiming.DriveTime
 
                         lbl_BoxThisLapTime.Text = "-";
                         lbl_BoxNextLapTime.Text = "-";
+                        lbl_ContinuousTimeBoxThisLap.Text = "-";
+                        lbl_ContinuousTimeBoxNextLap.Text = "-";
+                        lbl_TotalTimeBoxThisLap.Text = "-";
+                        lbl_TotalTimeBoxNextLap.Text = "-";
                     }
 
                     if (_boxNow)
@@ -422,6 +434,10 @@ namespace HHTiming.DriveTime
 
                     lbl_BoxNextLapTime.Text = "-";
                     lbl_BoxThisLapTime.Text = "-";
+                    lbl_ContinuousTimeBoxThisLap.Text = "-";
+                    lbl_ContinuousTimeBoxNextLap.Text = "-";
+                    lbl_TotalTimeBoxThisLap.Text = "-";
+                    lbl_TotalTimeBoxNextLap.Text = "-";
 
                     lbl_PitWindowHeading.Text = "";
                 }
@@ -436,6 +452,12 @@ namespace HHTiming.DriveTime
 
                 lbl_StintTime.Text = "0:00:00";
                 lbl_DriverName.Text = "NO DRIVER NAME";
+                lbl_BoxThisLapTime.Text = "-";
+                lbl_BoxNextLapTime.Text = "-";
+                lbl_ContinuousTimeBoxThisLap.Text = "-";
+                lbl_ContinuousTimeBoxNextLap.Text = "-";
+                lbl_TotalTimeBoxThisLap.Text = "-";
+                lbl_TotalTimeBoxNextLap.Text = "-";
 
                 _averageLapTime = 0;
                 _driverName = "";

@@ -43,6 +43,14 @@ namespace HHTiming.DriveTime
             this.lbl_BoxNextLapTime = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.lbl_BoxThisLapTime = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.labelWithAutoSizeText6 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.lbl_TotalTimeBoxNextLap = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.lbl_TotalTimeBoxThisLap = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.labelWithAutoSizeText17 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.labelWithAutoSizeText16 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.lbl_ContinuousTimeBoxNextLap = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.lbl_ContinuousTimeBoxThisLap = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.labelWithAutoSizeText15 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
+            this.labelWithAutoSizeText14 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.lbl_TotalTimeRemaining = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.labelWithAutoSizeText13 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.labelWithAutoSizeText12 = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
@@ -219,6 +227,14 @@ namespace HHTiming.DriveTime
             this.tableLayoutPanel1.Controls.Add(this.lbl_BoxNextLapTime, 3, 6);
             this.tableLayoutPanel1.Controls.Add(this.lbl_BoxThisLapTime, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText6, 3, 5);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_TotalTimeBoxNextLap, 3, 10);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_TotalTimeBoxThisLap, 0, 10);
+            this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText17, 3, 9);
+            this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText16, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_ContinuousTimeBoxNextLap, 3, 8);
+            this.tableLayoutPanel1.Controls.Add(this.lbl_ContinuousTimeBoxThisLap, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText15, 3, 7);
+            this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText14, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.lbl_TotalTimeRemaining, 3, 4);
             this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText13, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.labelWithAutoSizeText12, 0, 5);
@@ -229,20 +245,24 @@ namespace HHTiming.DriveTime
             this.tableLayoutPanel1.Controls.Add(this.lbl_CarNumber, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_DriverName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_StintMerged, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pnl_PitWindow, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.pnl_PitWindow, 0, 11);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 8;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel1.RowCount = 12;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(676, 518);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
@@ -287,6 +307,118 @@ namespace HHTiming.DriveTime
             this.labelWithAutoSizeText6.TabIndex = 18;
             this.labelWithAutoSizeText6.Text = "Next Lap";
             this.labelWithAutoSizeText6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_TotalTimeBoxNextLap
+            // 
+            this.lbl_TotalTimeBoxNextLap.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.lbl_TotalTimeBoxNextLap, 3);
+            this.lbl_TotalTimeBoxNextLap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_TotalTimeBoxNextLap.Font = new System.Drawing.Font("Microsoft Sans Serif", 35.98322F);
+            this.lbl_TotalTimeBoxNextLap.Location = new System.Drawing.Point(339, 335);
+            this.lbl_TotalTimeBoxNextLap.Name = "lbl_TotalTimeBoxNextLap";
+            this.lbl_TotalTimeBoxNextLap.ReferenceText = "";
+            this.lbl_TotalTimeBoxNextLap.Size = new System.Drawing.Size(334, 85);
+            this.lbl_TotalTimeBoxNextLap.TabIndex = 30;
+            this.lbl_TotalTimeBoxNextLap.Text = "0:00:00";
+            this.lbl_TotalTimeBoxNextLap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_TotalTimeBoxThisLap
+            // 
+            this.lbl_TotalTimeBoxThisLap.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.lbl_TotalTimeBoxThisLap, 3);
+            this.lbl_TotalTimeBoxThisLap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_TotalTimeBoxThisLap.Font = new System.Drawing.Font("Microsoft Sans Serif", 35.98322F);
+            this.lbl_TotalTimeBoxThisLap.Location = new System.Drawing.Point(3, 335);
+            this.lbl_TotalTimeBoxThisLap.Name = "lbl_TotalTimeBoxThisLap";
+            this.lbl_TotalTimeBoxThisLap.ReferenceText = "";
+            this.lbl_TotalTimeBoxThisLap.Size = new System.Drawing.Size(330, 85);
+            this.lbl_TotalTimeBoxThisLap.TabIndex = 29;
+            this.lbl_TotalTimeBoxThisLap.Text = "0:00:00";
+            this.lbl_TotalTimeBoxThisLap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelWithAutoSizeText17
+            // 
+            this.labelWithAutoSizeText17.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelWithAutoSizeText17, 3);
+            this.labelWithAutoSizeText17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWithAutoSizeText17.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.42658F);
+            this.labelWithAutoSizeText17.Location = new System.Drawing.Point(339, 297);
+            this.labelWithAutoSizeText17.Name = "labelWithAutoSizeText17";
+            this.labelWithAutoSizeText17.ReferenceText = "";
+            this.labelWithAutoSizeText17.Size = new System.Drawing.Size(334, 38);
+            this.labelWithAutoSizeText17.TabIndex = 28;
+            this.labelWithAutoSizeText17.Text = "Next Lap";
+            this.labelWithAutoSizeText17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelWithAutoSizeText16
+            // 
+            this.labelWithAutoSizeText16.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelWithAutoSizeText16, 3);
+            this.labelWithAutoSizeText16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWithAutoSizeText16.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.42658F);
+            this.labelWithAutoSizeText16.Location = new System.Drawing.Point(3, 297);
+            this.labelWithAutoSizeText16.Name = "labelWithAutoSizeText16";
+            this.labelWithAutoSizeText16.ReferenceText = "";
+            this.labelWithAutoSizeText16.Size = new System.Drawing.Size(330, 38);
+            this.labelWithAutoSizeText16.TabIndex = 27;
+            this.labelWithAutoSizeText16.Text = "Total Driving Time If Box This Lap";
+            this.labelWithAutoSizeText16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_ContinuousTimeBoxNextLap
+            // 
+            this.lbl_ContinuousTimeBoxNextLap.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.lbl_ContinuousTimeBoxNextLap, 3);
+            this.lbl_ContinuousTimeBoxNextLap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_ContinuousTimeBoxNextLap.Font = new System.Drawing.Font("Microsoft Sans Serif", 35.98322F);
+            this.lbl_ContinuousTimeBoxNextLap.Location = new System.Drawing.Point(339, 212);
+            this.lbl_ContinuousTimeBoxNextLap.Name = "lbl_ContinuousTimeBoxNextLap";
+            this.lbl_ContinuousTimeBoxNextLap.ReferenceText = "";
+            this.lbl_ContinuousTimeBoxNextLap.Size = new System.Drawing.Size(334, 85);
+            this.lbl_ContinuousTimeBoxNextLap.TabIndex = 26;
+            this.lbl_ContinuousTimeBoxNextLap.Text = "0:00:00";
+            this.lbl_ContinuousTimeBoxNextLap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_ContinuousTimeBoxThisLap
+            // 
+            this.lbl_ContinuousTimeBoxThisLap.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.lbl_ContinuousTimeBoxThisLap, 3);
+            this.lbl_ContinuousTimeBoxThisLap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_ContinuousTimeBoxThisLap.Font = new System.Drawing.Font("Microsoft Sans Serif", 35.98322F);
+            this.lbl_ContinuousTimeBoxThisLap.Location = new System.Drawing.Point(3, 212);
+            this.lbl_ContinuousTimeBoxThisLap.Name = "lbl_ContinuousTimeBoxThisLap";
+            this.lbl_ContinuousTimeBoxThisLap.ReferenceText = "";
+            this.lbl_ContinuousTimeBoxThisLap.Size = new System.Drawing.Size(330, 85);
+            this.lbl_ContinuousTimeBoxThisLap.TabIndex = 25;
+            this.lbl_ContinuousTimeBoxThisLap.Text = "0:00:00";
+            this.lbl_ContinuousTimeBoxThisLap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelWithAutoSizeText15
+            // 
+            this.labelWithAutoSizeText15.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelWithAutoSizeText15, 3);
+            this.labelWithAutoSizeText15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWithAutoSizeText15.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.42658F);
+            this.labelWithAutoSizeText15.Location = new System.Drawing.Point(339, 174);
+            this.labelWithAutoSizeText15.Name = "labelWithAutoSizeText15";
+            this.labelWithAutoSizeText15.ReferenceText = "";
+            this.labelWithAutoSizeText15.Size = new System.Drawing.Size(334, 38);
+            this.labelWithAutoSizeText15.TabIndex = 24;
+            this.labelWithAutoSizeText15.Text = "Next Lap";
+            this.labelWithAutoSizeText15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelWithAutoSizeText14
+            // 
+            this.labelWithAutoSizeText14.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelWithAutoSizeText14, 3);
+            this.labelWithAutoSizeText14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelWithAutoSizeText14.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.42658F);
+            this.labelWithAutoSizeText14.Location = new System.Drawing.Point(3, 174);
+            this.labelWithAutoSizeText14.Name = "labelWithAutoSizeText14";
+            this.labelWithAutoSizeText14.ReferenceText = "";
+            this.labelWithAutoSizeText14.Size = new System.Drawing.Size(330, 38);
+            this.labelWithAutoSizeText14.TabIndex = 23;
+            this.labelWithAutoSizeText14.Text = "Continuous Time If Box This Lap";
+            this.labelWithAutoSizeText14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbl_TotalTimeRemaining
             // 
@@ -494,6 +626,14 @@ namespace HHTiming.DriveTime
         private DevComponents.DotNetBar.ItemContainer itemContainer8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_TotalTimeRemaining;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_TotalTimeBoxNextLap;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_TotalTimeBoxThisLap;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText17;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText16;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_ContinuousTimeBoxNextLap;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_ContinuousTimeBoxThisLap;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText15;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText14;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText13;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText12;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_ContinuousTimeRemaining;
