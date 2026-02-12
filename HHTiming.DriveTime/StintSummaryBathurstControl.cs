@@ -400,27 +400,44 @@ namespace HHTiming.DriveTime
                         lbl_TotalTimeBoxNextLap.Text = "-";
                     }
 
-                    if (_boxNow)
+                    if (_boxNow || _sessionTime > _pitWindowOpenTime)
                     {
-                        if (aFlashFlag)
+                        tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 2);
+                        lbl_PitWindowContent.Visible = false;
+
+                        if (_boxNow)
                         {
-                            pnl_PitWindow.BackColor = Color.Red;
-                            pnl_PitWindow.ForeColor = Color.Black;
+                            if (aFlashFlag)
+                            {
+                                pnl_PitWindow.BackColor = Color.Red;
+                                pnl_PitWindow.ForeColor = Color.Black;
+                            }
+                            else
+                            {
+                                pnl_PitWindow.BackColor = Color.Black;
+                                pnl_PitWindow.ForeColor = Color.Red;
+                            }
+
+                            lbl_PitWindowHeading.Text = "BOX THIS LAP";
                         }
                         else
                         {
-                            pnl_PitWindow.BackColor = Color.Black;
-                            pnl_PitWindow.ForeColor = Color.Red;
-                        }
+                            pnl_PitWindow.BackColor = Color.Green;
+                            pnl_PitWindow.ForeColor = Color.White;
 
-                        lbl_PitWindowHeading.Text = "BOX THIS LAP";
+                            lbl_PitWindowHeading.Text = "PIT WINDOW OPEN";
+                        }
                     }
                     else
                     {
                         pnl_PitWindow.BackColor = default(Color);
                         pnl_PitWindow.ForeColor = default(Color);
 
-                        lbl_PitWindowHeading.Text = "";
+                        tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
+                        lbl_PitWindowContent.Visible = true;
+
+                        lbl_PitWindowHeading.Text = "Minimum Stint Time (No Extra Stop)";
+                        lbl_PitWindowContent.Text = SecondsToTimeString(_pitWindowOpenTime - _stintStartTime, LongTimeFormat);
                     }
                 }
                 else
@@ -439,7 +456,11 @@ namespace HHTiming.DriveTime
                     lbl_TotalTimeBoxThisLap.Text = "-";
                     lbl_TotalTimeBoxNextLap.Text = "-";
 
-                    lbl_PitWindowHeading.Text = "";
+                    tableLayoutPanel1.SetRowSpan(lbl_PitWindowHeading, 1);
+                    lbl_PitWindowContent.Visible = true;
+
+                    lbl_PitWindowHeading.Text = "Minimum Stint Time (No Extra Stop)";
+                    lbl_PitWindowContent.Text = "-";
                 }
             }
         }
@@ -458,6 +479,8 @@ namespace HHTiming.DriveTime
                 lbl_ContinuousTimeBoxNextLap.Text = "-";
                 lbl_TotalTimeBoxThisLap.Text = "-";
                 lbl_TotalTimeBoxNextLap.Text = "-";
+                lbl_PitWindowHeading.Text = "Minimum Stint Time (No Extra Stop)";
+                lbl_PitWindowContent.Text = "-";
 
                 _averageLapTime = 0;
                 _driverName = "";

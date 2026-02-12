@@ -63,6 +63,7 @@ namespace HHTiming.DriveTime
             this.lbl_StintMerged = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.pnl_PitWindow = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbl_PitWindowContent = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.lbl_PitWindowHeading = new HHDev.Core.WinForms.Controls.LabelWithAutoSizeText(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.pnl_PitWindow.SuspendLayout();
@@ -574,26 +575,41 @@ namespace HHTiming.DriveTime
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.lbl_PitWindowContent, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.lbl_PitWindowHeading, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.78F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.22F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(676, 94);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // lbl_PitWindowContent
+            // 
+            this.lbl_PitWindowContent.AutoSize = true;
+            this.lbl_PitWindowContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_PitWindowContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 36.52028F);
+            this.lbl_PitWindowContent.Location = new System.Drawing.Point(3, 26);
+            this.lbl_PitWindowContent.Name = "lbl_PitWindowContent";
+            this.lbl_PitWindowContent.ReferenceText = "";
+            this.lbl_PitWindowContent.Size = new System.Drawing.Size(670, 68);
+            this.lbl_PitWindowContent.TabIndex = 16;
+            this.lbl_PitWindowContent.Text = "0:00:00";
+            this.lbl_PitWindowContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbl_PitWindowHeading
             // 
             this.lbl_PitWindowHeading.AutoSize = true;
             this.lbl_PitWindowHeading.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_PitWindowHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 36.52028F);
+            this.lbl_PitWindowHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.96364F);
             this.lbl_PitWindowHeading.Location = new System.Drawing.Point(3, 0);
             this.lbl_PitWindowHeading.Name = "lbl_PitWindowHeading";
             this.lbl_PitWindowHeading.ReferenceText = "";
-            this.lbl_PitWindowHeading.Size = new System.Drawing.Size(670, 94);
+            this.lbl_PitWindowHeading.Size = new System.Drawing.Size(670, 26);
             this.lbl_PitWindowHeading.TabIndex = 15;
-            this.lbl_PitWindowHeading.Text = "";
+            this.lbl_PitWindowHeading.Text = "Minimum Stint Time (No Extra Stop)";
             this.lbl_PitWindowHeading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // StintSummaryBathurstControl
@@ -648,6 +664,7 @@ namespace HHTiming.DriveTime
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText labelWithAutoSizeText6;
         private System.Windows.Forms.Panel pnl_PitWindow;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_PitWindowContent;
         private HHDev.Core.WinForms.Controls.LabelWithAutoSizeText lbl_PitWindowHeading;
     }
 }
