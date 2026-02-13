@@ -134,6 +134,7 @@ namespace HHTiming.DriveTime
                 if (value != _driverName && value != Globals.IGNORE_FIELD_STRING && value != "")
                 {
                     _driverName = value;
+                    _driverStartTime = _stintStartTime;
                     lbl_DriverName.Text = value;
 
                     _previousStintTimes = 0;
@@ -333,7 +334,7 @@ namespace HHTiming.DriveTime
                     if (_estimatedCurrentStintEndTime != double.MaxValue)
                         remainingTime = _estimatedCurrentStintEndTime - _sessionTime;
                     lbl_StintTime.Text = SecondsToTimeString(stintTime, LongTimeFormat);
-                    if (remainingTime > 0)
+                    if (remainingTime > 0 || _carStatus == eCarStatus.PitOut)
                     {
                         SetBackgroundColor(_carColor);
                     }
@@ -529,7 +530,8 @@ namespace HHTiming.DriveTime
                 _previousStintTimes = 0;
                 _previousPitStopTimes = 0;
                 _stintNumber = 0;
-                _driverStartTime = 0;
+                _driverStartTime = _stintStartTime;
+
             }
             else if (anUpdateMessage is PitstopUIUpdateMessage)
             {
@@ -683,7 +685,14 @@ namespace HHTiming.DriveTime
 
                 if (aMessage.DrivingTime != double.MaxValue)
                 {
-                    _stintStartTime = aMessage.StartTime;
+                    if (_stintStartTime != aMessage.StartTime)
+                    {
+                        if (_stintStartTime == _driverStartTime)
+                        {
+                            _driverStartTime = aMessage.StartTime;
+                        }
+                        _stintStartTime = aMessage.StartTime;
+                    }
                     _stintTime = aMessage.DrivingTime;
                     _stintTimeUpdated = aMessage.StartTime + aMessage.DrivingTime;
                 }
