@@ -235,6 +235,9 @@ namespace HHTiming.DriveTime
                     case "MaxStintLength":
                         StartOfPitWindow = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
                         break;
+                    case "EndOfPitWindow":
+                        EndOfPitWindow = int.Parse(elem.InnerText, CultureInfo.InvariantCulture);
+                        break;
                 }
             }
         }
@@ -245,6 +248,7 @@ namespace HHTiming.DriveTime
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "CarColor", _carColor.ToArgb().ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "InLapTime", InLapTime.ToString(CultureInfo.InvariantCulture), parentXMLElement);
             XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "MaxStintLength", StartOfPitWindow.ToString(CultureInfo.InvariantCulture), parentXMLElement);
+            XMLHelperFunctions.WriteToXML(parentXMLElement.OwnerDocument, "EndOfPitWindow", EndOfPitWindow.ToString(CultureInfo.InvariantCulture), parentXMLElement);
         }
 
         #endregion
